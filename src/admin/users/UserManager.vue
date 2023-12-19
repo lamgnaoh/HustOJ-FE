@@ -1,0 +1,303 @@
+<template>
+  <div style="padding-top: 30px;" class="user-manage">
+    <div style="display: flex;">
+      <h2>User Management</h2>
+      <div style="height:80px;padding-top: 10px;">
+        <Button type="primary" @click="newModal = true">Create new user</Button>
+      </div>
+    </div>
+    <Row>
+      <Col span="24">
+        <ul style="font-weight: 700" class="pro-table">
+          <li class="name">Full name</li>
+          <li class="username">Username</li>
+          <li class="mail">Mail</li>
+          <li class="diff">Accept count/Submit count</li>
+          <li class="diff">AC rate</li>
+          <li class="rate">Role</li>
+          <li class="rate">Modify</li>
+        </ul>
+        <ul
+            v-for="(user, index) in users"
+            :key="user.id"
+            class="pro-table"
+            :class="[index % 2 === 0 ? 'bg' : '']"
+        >
+          <li class="name">{{ user.name }}</li>
+          <li class="username">{{ user.username }}</li>
+          <li class="mail">{{ user.email }}</li>
+          <li class="diff">{{ user.acCount }}/{{ user.submitCount }}</li>
+          <li class="diff">{{ (user.acRate * 100).toFixed(2) }}%</li>
+          <li class="rate">{{ getRole(user) }}</li>
+          <li class="rate">
+            <Button type="primary" class="btn-primary" @click="reviseInfo(user)"
+            >Modify</Button
+            >
+            <!--<Button type="danger" class="btn-primary" @click="deleteUser(user.id)">Delete</Button>-->
+          </li>
+        </ul>
+      </Col>
+      <Modal
+          v-model="newModal"
+          title="Create new user"
+          width="50%"
+          @on-ok="createUser"
+          @on-cancel="newModal = false"
+      >
+        <div style="display: flex;">
+          <div
+              style="display: flex;height: 220px;padding-top:10px;width: 60px;flex-direction: column;justify-content: space-between"
+          >
+            <div>Username</div>
+            <div>Password</div>
+            <div>Email</div>
+            <div>First name</div>
+            <div>Last name</div>
+            <!--            <div>School</div>-->
+            <div>Role</div>
+          </div>
+          <div>
+            <Input v-model="newUser.username" />
+            <Input v-model="newUser.password" />
+            <Input v-model="newUser.email" />
+            <Input v-model="newUser.firstname" />
+            <Input v-model="newUser.lastname" />
+            <!--            <Input v-model="newUser.school" />-->
+            <Select v-model="role" style="width:200px">
+              <Option
+                  v-for="item in roleList"
+                  :value="item.value"
+                  :key="item.value"
+              >{{ item.label }}</Option
+              >
+            </Select>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+          v-model="reviseModal"
+          title="Modify user info"
+          width="50%"
+          @on-ok="reviseUserInfo"
+          @on-cancel="reviseModal = false"
+      >
+        <div style="display: flex;">
+          <div
+              style="display: flex;height: 180px;padding-top:10px;width: 50px;flex-direction: column;justify-content: space-between"
+          >
+            <div>Username</div>
+            <div>Email</div>
+            <div>First name</div>
+            <div>Last name</div>
+            <!--            <div>School</div>-->
+            <div>Role</div>
+          </div>
+          <div>
+            <Input v-model="reviseUser.username" />
+            <Input v-model="reviseUser.email" />
+            <Input v-model="reviseUser.firstname" />
+            <Input v-model="reviseUser.lastname" />
+            <Input v-model="reviseUser.school" />
+            <Select v-model="role">
+              <Option
+                  v-for="item in roleList"
+                  :value="item.value"
+                  :key="item.value"
+              >{{ item.label }}</Option
+              >
+            </Select>
+          </div>
+        </div>
+      </Modal>
+      <Col span="24" class="card-margin">
+        <Page
+            :total="total"
+            show-sizer
+            @on-change="pageChange"
+            @on-page-size-change="pageSizeChange"
+        />
+      </Col>
+    </Row>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import api from '@/api/api'
+import md5 from 'js-md5'
+
+@Component
+export default class UserManager extends Vue {
+  users: any = []
+  pageSize: number = 10
+  page: number = 0
+  total: any = 0
+  reviseUser: any = {}
+  newUser: any = {}
+  newModal: boolean = false
+  reviseModal: boolean = false
+  role: string = ''
+  roleList: Array<any> = [
+    {
+      label: 'User',
+      value: 'ROLE_USER',
+    },
+    {
+      label: 'Admin',
+      value: 'ROLE_ADMIN',
+    },
+    {
+      label: 'Super Admin',
+      value: 'ROLE_SUPER_ADMIN',
+    },
+  ]
+
+  reviseInfo(user: any) {
+    this.reviseUser = JSON.parse(JSON.stringify(user))
+    this.reviseModal = true
+  }
+
+  createUser() {
+    api.user
+    .createUser({
+      ...this.newUser,
+      password: md5(this.newUser.password),
+      authorities: [{ name: this.role }],
+    })
+    .then(() => {
+      ;(this as any).$Message.success('Create successful')
+      this.newUser = {}
+    })
+    .catch((err: any) => {
+      ;(this as any).$Message.error(err.data.message)
+    })
+  }
+
+  reviseUserInfo() {
+    const user: any = {
+      ...this.reviseUser,
+      authorities: [{ name: this.role }],
+    }
+    api.user.updateUserInfo(user).then(res => {
+      this.reviseUser = {}
+      this.getUsers(this.page, this.pageSize)
+    })
+  }
+
+  getRole(user: any) {
+    const type = user.authorities[0]
+    if (type) {
+      switch (type.authority) {
+        case 'ROLE_ADMIN':
+          return 'Admin'
+        case 'ROLE_USER':
+          return 'User'
+        case 'ROLE_SUPER_ADMIN':
+          return 'Super Admin'
+        default:
+          return ''
+      }
+    } else {
+      return ''
+    }
+  }
+  pageChange(pages: number) {
+    this.page = pages - 1
+    this.getUsers(pages - 1, this.pageSize)
+  }
+
+  pageSizeChange(size: number) {
+    this.getUsers(this.page, size)
+    this.pageSize = size
+  }
+
+  deleteUser(id: string) {
+    api
+    .deleteUser({
+      list: [id],
+    })
+    .then(res => {
+      ;(this as any).$Message.success('Modify successful')
+    })
+    .catch((err: any) => {
+      ;(this as any).$Message.error(err.data.message)
+    })
+  }
+
+  getUsers(page: number, size: number) {
+    api
+    .getUser({
+      size: size,
+      page: page,
+    })
+    .then((res: any) => {
+      this.users = res.data.list
+      this.total = res.data.total
+    })
+    .catch((err: any) => {
+      ;(this as any).$Message.error(err.data.message)
+    })
+  }
+  mounted() {
+    this.getUsers(0, 10)
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.user-manage {
+  text-align: left;
+}
+
+.card-margin {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  button {
+    margin-right: 2px;
+    padding: 3px 7px 3px;
+  }
+}
+.pro-table {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  height: 48px;
+  line-height: 48px;
+  text-align: left;
+  border-bottom: rgb(221, 221, 221) solid 1px;
+  .name {
+    width: 10%;
+    cursor: pointer;
+    &:hover {
+      color: rgb(17, 85, 204);
+    }
+  }
+  .username {
+    width: 20%;
+    cursor: pointer;
+    &:hover {
+      color: rgb(17, 85, 204);
+    }
+  }
+  .mail {
+    width: 20%;
+  }
+  .diff {
+    width: 10%;
+  }
+  .rate {
+    width: 20%;
+    text-align: center;
+  }
+  .btn-primary {
+    margin-left: 10px;
+  }
+}
+h2 {
+  font-weight: 500;
+  font-size: 36px;
+  text-align: left;
+  margin: 12px auto 18px 0;
+}
+</style>

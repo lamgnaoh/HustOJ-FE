@@ -1,0 +1,26 @@
+.DS_Store
+node_modules
+/dist
+package-lock.json
+
+# local env files
+.env.local
+.env.*.local
+
+# ignore frontend env
+# .env.dev For when the front and back ends run on the same machine
+.env.dev
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
