@@ -12,6 +12,7 @@ export default new Vuex.Store({
     role: '',
     contestList: [],
     currentContest: {},
+
   },
   mutations: {
     login(state, payload) {
@@ -76,7 +77,11 @@ export default new Vuex.Store({
   },
   getters: {
     isSuperAdmin(state){
-      return state.role.includes('ADMIN')
+      return state.role.includes('SUPER_ADMIN')
+    },
+    getUserId(state) {
+      // @ts-ignore
+      return state.userInfo.id;
     }
   }
 })

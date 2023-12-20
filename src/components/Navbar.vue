@@ -93,9 +93,11 @@ export default class Navbar extends Vue {
       api.user
       .getMyInfo()
       .then((res: any) => {
+        console.log(res.data())
         this.$store.commit('setUserInfo', res.data)
       })
       .catch((err: any) => {
+        console.log(err)
         ;(this as any).$Message.error(err.data.message)
       })
     }
@@ -106,7 +108,9 @@ export default class Navbar extends Vue {
       this.logout()
     }
     if (name === 'admin') {
-      this.$router.push('/admin')
+      const routeData = this.$router.resolve('/admin')
+      window.open(routeData.href, '_blank')
+
     }
     if (name === 'personal') {
       const id = this.$store.state.userInfo.id

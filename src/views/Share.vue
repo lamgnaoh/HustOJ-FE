@@ -5,16 +5,6 @@
         <Button type="primary" @click="rejudge">Rejudge</Button>
       </div>
     </Col>
-    <Col span="8">
-      <div class="top">
-        <Select v-model="select" style="width:200px">
-          <Option v-for="item in submitList" :value="item" :key="item">{{
-              item
-            }}</Option>
-        </Select>
-        <Button type="primary" @click="judge(select)">Select</Button>
-      </div>
-    </Col>
     <Col span="18" offset="3">
       <div class="container">
         <h2>

@@ -47,9 +47,6 @@
           ref="myEditor"
       ></codemirror>
       <Row class="footer-submit" type="flex" justify="space-between">
-        <router-link to="/login" v-if="!logined"
-        >You are not logged in and cannot submit code. Please login to continue
-        </router-link>
         <Button
             @click="submitCode"
             class="btn"
@@ -113,6 +110,11 @@ export default class CodeMirror extends Vue {
     default: false,
   })
   logined: boolean
+
+  // get logined(){
+  //   return this.$store.state.username != null
+  //       || window.localStorage.getItem('username') != null
+  // }
 
   @Prop({
     type: Boolean,
@@ -186,6 +188,10 @@ export default class CodeMirror extends Vue {
   }
 
   submitCode() {
+    if (!this.logined) {
+      this.$Message.error('Please login first')
+      return
+    }
     const code = this.code.replace(/\n/g, '\\n ')
     this.$emit('codeSubmit', {
       code: code,

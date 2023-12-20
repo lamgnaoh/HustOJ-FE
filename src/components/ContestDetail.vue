@@ -129,11 +129,11 @@
         <TabPane
             label="Submission"
             name="submit"
-            v-if="role !== 'ROLE_USER'"
+            v-if="showContestSubmission()"
             style="text-align: left"
             class="pane-padding"
         >
-          <Row> </Row>
+          <Row></Row>
           <Table :columns="titleSubmission" :data="status"></Table>
           <div style="text-align: center;padding-top: 30px;">
             <Page
@@ -266,20 +266,16 @@ export default class ContestDetail extends Vue {
   authorSelect: string = ''
 
   page: number = 0
-  pageSize: number = 0
+  pageSize: number = 10
   total: number = 0
   endDate: number = 0
   interval: string = ''
 
   titleSubmission: any = [
     {
-      title: '#',
-      type: 'index',
-      width: 78,
-    },
-    {
       title: 'Author',
       key: 'authorName',
+      width: 150,
       className: 'pointer-class',
     },
     {
@@ -337,6 +333,13 @@ export default class ContestDetail extends Vue {
       key: 'duration',
       render: (h: any, obj: any) => {
         return h('span', (obj.row.duration || 0) + ' ms')
+      },
+    },
+    {
+      title: 'Memory',
+      key: 'memory',
+      render: (h: any, obj: any) => {
+        return h('span', obj.row.memory !=null ? (obj.row.memory / (1024*1024)).toFixed(0) + ' mb' : '--')
       },
     },
     {
@@ -407,6 +410,11 @@ export default class ContestDetail extends Vue {
     if (name === '' && this.name === '') {
       this.getContestRanking()
     }
+  }
+  showContestSubmission(){
+    return (this.role != "ROLE_USER" &&
+        this.$store.state.currentContest.authorId == this.$store.getters.getUserId ) ||
+        this.$store.getters.isSuperAdmin
   }
 
   get role() {
@@ -511,6 +519,8 @@ export default class ContestDetail extends Vue {
     .then(res => {
       this.total = res.data.total
       this.status = res.data.list
+    }).catch(err => {
+      this.$Message.error(err.data.message)
     })
   }
 

@@ -59,7 +59,7 @@
                 </div>
                 <code-mirror
                     @codeSubmit="getCode"
-                    logined="logined"
+                    :logined="logined"
                     :myloading="codeLoading"
                     :myStatus="myStatus"
                 ></code-mirror>
@@ -182,7 +182,8 @@ export default class ProblemDetail extends Vue {
   ]
 
   get logined() {
-    return window.localStorage.getItem('token')
+    console.log(window.localStorage.getItem('token') != '')
+    return window.localStorage.getItem('token') != ''
   }
 
   get codeColor() {
