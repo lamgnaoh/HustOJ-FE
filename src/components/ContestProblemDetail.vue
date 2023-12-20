@@ -67,6 +67,7 @@
                   @codeSubmit="getCode"
                   logined="logined"
                   :myloading="codeLoading"
+                  :myStatus="myStatus"
               ></code-mirror>
               <Card v-if="codeStatus" class="pro-status">
                 Run Code Status:
@@ -142,6 +143,7 @@ export default class ContestProblemDetail extends Vue {
   hide: boolean = false
   codeLoading: boolean = false
   codeStatus: string = ''
+  myStatus: string = ''
   title: any = [
     {
       title: '#',
@@ -150,10 +152,7 @@ export default class ContestProblemDetail extends Vue {
     },
     {
       title: 'Submission time',
-      key: 'createDate',
-      render: (h: any, obj: any) => {
-        return h(obj.row.createDate)
-      },
+      key: 'createDate'
     },
     {
       title: 'Language',
@@ -164,6 +163,13 @@ export default class ContestProblemDetail extends Vue {
       key: 'duration',
       render: (h: any, obj: any) => {
         return h('span', (obj.row.duration || 0) + 'ms')
+      },
+    },
+    {
+      title: 'Memory',
+      key: 'memory',
+      render: (h: any, obj: any) => {
+        return h('span', obj.row.memory !=null ? (obj.row.memory / (1024*1024)).toFixed(0) + ' mb' : '--')
       },
     },
     {
@@ -213,8 +219,7 @@ export default class ContestProblemDetail extends Vue {
         this.submissionId = res.data.id
       })
       .catch((err: any) => {
-        // error data code need to change
-        if (err.data.code === -6) {
+        if (err.data.code === "034") {
           ;(this as any).$Message.info('Not in the entry list, trying to join the competition')
           api
           .sendPassword({
@@ -301,6 +306,7 @@ export default class ContestProblemDetail extends Vue {
     })
     .then((res: any) => {
       this.problem = res.data
+      this.myStatus = this.problem.myStatus;
     })
     .catch(() => {
       ;(this as any).$Message.error('Failed to get problem details')

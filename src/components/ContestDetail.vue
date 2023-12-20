@@ -127,7 +127,7 @@
           </table>
         </TabPane>
         <TabPane
-            label="Submit"
+            label="Submission"
             name="submit"
             v-if="role !== 'ROLE_USER'"
             style="text-align: left"
@@ -196,6 +196,21 @@ export default class ContestDetail extends Vue {
   contestStatus: string = 'Processing'
   data: any = []
   title: any = [
+    {
+      key: 'myStatus',
+      render: (h: any, obj: any) => {
+        if (obj.row.myStatus === 'ACCEPTED') {
+          return h('Icon', {
+            props: {
+              type: 'md-checkmark',
+              size: 20,
+              color: '#19be6b',
+            },
+          })
+        }
+      } ,
+      width: 80
+    },
     {
       title: 'ID',
       key: 'index',
@@ -606,6 +621,7 @@ export default class ContestDetail extends Vue {
           ... item
         })
       })
+      console.log(that.problems)
     })
     .catch((error: any) => {
       console.log(error)
