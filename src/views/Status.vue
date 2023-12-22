@@ -125,11 +125,11 @@ export default class Status extends Vue {
           value: 3,
         },
         {
-          label: 'JAVASCRIPT',
+          label: 'PYTHON2',
           value: 4,
         },
         {
-          label: 'PYTHON',
+          label: 'PYTHON3',
           value: 5,
         }
       ],
@@ -142,9 +142,9 @@ export default class Status extends Vue {
         } else if (value === 3) {
           return row.language === 'JAVA'
         } else if (value === 4) {
-          return row.language === 'JAVASCRIPT'
+          return row.language === 'PYTHON2'
         } else if (value === 5) {
-          return row.language === 'PYTHON'
+          return row.language === 'PYTHON3'
         }
       },
     },

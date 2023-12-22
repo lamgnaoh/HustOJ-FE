@@ -11,8 +11,7 @@ export default new Vuex.Store({
     loginStatus: '',
     role: '',
     contestList: [],
-    currentContest: {},
-
+    currentContest: {}
   },
   mutations: {
     login(state, payload) {
@@ -24,9 +23,11 @@ export default new Vuex.Store({
     logout(state) {
       state.username = ''
       state.token = ''
+      state.userInfo=undefined
       window.localStorage.setItem('token', '')
       window.localStorage.setItem('username', '')
       window.localStorage.setItem('times', '')
+      window.localStorage.setItem('userInfo', '')
       window.localStorage.setItem('role', '')
     },
     refresh(state, payload) {
@@ -50,7 +51,7 @@ export default new Vuex.Store({
           .then((res: any) => {
             context.commit('login', {
               token: res.data.token,
-              username: payload.username,
+              username: payload.username
             })
             resolve(res)
           })

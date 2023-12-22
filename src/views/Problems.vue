@@ -78,20 +78,6 @@
       </Row>
     </Col>
     <Col span="6" class="card-margin">
-      <Card dis-hover align="left">
-        <p slot="title">Announcement</p>
-        <li
-            style="list-style: none"
-            v-for="(announcement, index) in announcements"
-            :key="announcement.id"
-            class="item"
-        >
-          <a @click="announcementDetail(announcement.id)">
-            {{ index + 1 }}.
-            {{ announcement.title }}
-          </a>
-        </li>
-      </Card>
       <Card dis-hover align="left" style="margin-top: 20px">
         <p slot="title">Tags</p>
         <Button
@@ -102,11 +88,11 @@
         >
           {{ tag.name }}
         </Button>
-<!--        Todo-->
-        <Button long  @click="getProblems()">
-          <Icon type="md-shuffle" />
-          Pick one
-        </Button>
+<!--&lt;!&ndash;        Todo&ndash;&gt;-->
+<!--        <Button long  @click="getProblems()">-->
+<!--          <Icon type="md-shuffle" />-->
+<!--          Pick one-->
+<!--        </Button>-->
       </Card>
     </Col>
   </Row>
@@ -313,7 +299,6 @@ export default class Problems extends Vue {
   mounted() {
     this.getProblems()
     this.getAllTags()
-    this.getAllAnnouncements()
   }
 }
 </script>

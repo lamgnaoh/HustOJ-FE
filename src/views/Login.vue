@@ -51,6 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import api from "@/api/api";
 
 @Component
 export default class Login extends Vue {
@@ -82,6 +83,17 @@ export default class Login extends Vue {
           password: this.userLogin.password,
         })
         .then(() => {
+          ;(this as any).$Message.success('Login successful')
+          api.user
+          .getMyInfo()
+          .then((res: any) => {
+            const role = res.data.authorities[0].authority
+            this.$store.commit('setUserInfo', res.data)
+            this.$store.commit('setRole', role)
+          })
+          .catch((err: any) => {
+            ;(this as any).$Message.error(err.data.message)
+          })
           if (Object.getOwnPropertyNames(this.$route.query).length === 0) {
             this.$router.push({
               path: '/problems',

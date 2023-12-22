@@ -29,7 +29,7 @@ import {JUDGE_STATUS} from "@/api/constant";
     }
   }
 })
-export default class Status extends Vue {
+export default class Submission extends Vue {
   total: number = 10
   pageSize: number = 10
   page: number = 0
@@ -82,6 +82,14 @@ export default class Status extends Vue {
           label: 'JAVA',
           value: 3,
         },
+        {
+          label: 'PYTHON2',
+          value: 4,
+        },
+        {
+          label: 'PYTHON3',
+          value: 5,
+        },
       ],
       filterMultiple: false,
       filterMethod(value: any, row: any) {
@@ -91,6 +99,10 @@ export default class Status extends Vue {
           return row.language === 'CPP'
         } else if (value === 3) {
           return row.language === 'JAVA'
+        } else if (value === 4) {
+          return row.language === 'PYTHON2'
+        } else if (value === 5) {
+          return row.language === 'PYTHON3'
         }
       },
     },
@@ -108,50 +120,56 @@ export default class Status extends Vue {
       align: 'center',
       filters: [
         {
+          label: 'Wrong Answer',
+          value: -1,
+        },
+        {
           label: 'Accepted',
+          value: 0,
+        },
+        {
+          label: 'CPU Time Limit Exceeded',
           value: 1,
         },
         {
-          label: 'Wrong Answer',
+          label: 'Time Limit Exceeded',
           value: 2,
         },
         {
-          label: 'Runtime Error',
+          label: 'Memory Limit Exceeded',
           value: 3,
         },
         {
-          label: 'Time Limit Exceeded',
+          label: 'Runtime Error',
           value: 4,
         },
         {
-          label: 'Memory Limit Exceeded',
+          label: 'System Error',
           value: 5,
         },
         {
           label: 'Compile Error',
           value: 6,
         },
-        {
-          label: 'Format Error',
-          value: 7,
-        },
       ],
       filterMultiple: false,
       filterMethod(value: any, row: any) {
-        if (value === 1) {
-          return row.result === 'Accepted'
+        if (value === 0) {
+          return row.result === 'ACCEPTED'
+        } else if (value === -1) {
+          return row.result === 'WRONG_ANSWER'
+        } else if (value === 1) {
+          return row.result === 'CPU_TIME_LIMIT_EXCEEDED'
         } else if (value === 2) {
-          return row.result === 'Wrong Answer'
+          return row.result === 'TIME_LIMIT_EXCEEDED'
         } else if (value === 3) {
-          return row.result === 'Runtime Error'
+          return row.result === 'MEMORY_LIMIT_EXCEEDED'
         } else if (value === 4) {
-          return row.result === 'Time Limit Exceeded'
+          return row.result === 'RUNTIME_ERROR'
         } else if (value === 5) {
-          return row.result === 'Memory Limit Exceeded'
+          return row.result === 'SYSTEM_ERROR'
         } else if (value === 6) {
-          return row.result === 'Compile Error'
-        } else if (value === 7) {
-          return row.result === 'Format Error'
+          return row.result === 'COMPILE_ERROR'
         }
       },
     },

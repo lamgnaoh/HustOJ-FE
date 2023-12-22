@@ -66,7 +66,7 @@
               <td style="width:100px;">AC/Total Submit</td>
               <td
                   style="width:100px;"
-                  v-if="contest.judgeType === 'IMMEDIATELY'"
+                  v-if="contest.contestRuleType === 'ACM'"
               >
                 Time cost + Penalty time
               </td>
@@ -87,7 +87,7 @@
               <td>{{ index + 1 }}</td>
               <td>{{ user.userName }}</td>
               <td>{{ user.acceptCount }}/{{ user.submitCount }}</td>
-              <td v-if="contest.judgeType === 'IMMEDIATELY'">
+              <td v-if="contest.contestRuleType === 'ACM'">
                 <p v-html="timetrans(user.time)"></p>
                 <p v-if="user.errorCount !== 0">(-{{ user.errorCount }})</p>
               </td>
@@ -96,7 +96,7 @@
               </td>
               <!--<template v-for="key in problemKey">-->
               <template v-for="(problem, key) in user.timeList">
-                <template v-if="contest.judgeType === 'IMMEDIATELY'">
+                <template v-if="contest.contestRuleType === 'ACM'">
                   <template v-if="problem.submitted === true">
                     <td
                         v-if="problem.passed === true"
@@ -316,6 +316,14 @@ export default class ContestDetail extends Vue {
           label: 'JAVA',
           value: 3,
         },
+        {
+          label: 'PYTHON2',
+          value: 4,
+        },
+        {
+          label: 'PYTHON3',
+          value: 5,
+        },
       ],
       filterMultiple: false,
       filterMethod(value: any, row: any) {
@@ -325,6 +333,10 @@ export default class ContestDetail extends Vue {
           return row.language === 'CPP'
         } else if (value === 3) {
           return row.language === 'JAVA'
+        } else if (value === 4) {
+          return row.language === 'PYTHON2'
+        } else if (value === 5) {
+          return row.language === 'PYTHON3'
         }
       },
     },
@@ -349,53 +361,59 @@ export default class ContestDetail extends Vue {
       align: 'center',
       filters: [
         {
+          label: 'Wrong Answer',
+          value: -1,
+        },
+        {
           label: 'Accepted',
+          value: 0,
+        },
+        {
+          label: 'CPU Time Limit Exceeded',
           value: 1,
         },
         {
-          label: 'Wrong Answer',
+          label: 'Time Limit Exceeded',
           value: 2,
         },
         {
-          label: 'Runtime Error',
+          label: 'Memory Limit Exceeded',
           value: 3,
         },
         {
-          label: 'Time Limit Exceeded',
+          label: 'Runtime Error',
           value: 4,
         },
         {
-          label: 'Memory Limit Exceeded',
+          label: 'System Error',
           value: 5,
         },
         {
           label: 'Compile Error',
           value: 6,
         },
-        {
-          label: 'Format Error',
-          value: 7,
-        },
       ],
       filterMultiple: false,
       filterMethod(value: any, row: any) {
-        if (value === 1) {
-          return row.result === 'Accepted'
+        if (value === 0) {
+          return row.result === 'ACCEPTED'
+        } else if (value === -1) {
+          return row.result === 'WRONG_ANSWER'
+        } else if (value === 1) {
+          return row.result === 'CPU_TIME_LIMIT_EXCEEDED'
         } else if (value === 2) {
-          return row.result === 'Wrong Answer'
+          return row.result === 'TIME_LIMIT_EXCEEDED'
         } else if (value === 3) {
-          return row.result === 'Runtime Error'
+          return row.result === 'MEMORY_LIMIT_EXCEEDED'
         } else if (value === 4) {
-          return row.result === 'Time Limit Exceeded'
+          return row.result === 'RUNTIME_ERROR'
         } else if (value === 5) {
-          return row.result === 'Memory Limit Exceeded'
+          return row.result === 'SYSTEM_ERROR'
         } else if (value === 6) {
-          return row.result === 'Compile Error'
-        } else if (value === 7) {
-          return row.result === 'Format Error'
+          return row.result === 'COMPILE_ERROR'
         }
       },
-    },
+    }
   ]
   status: any = []
 
@@ -479,7 +497,7 @@ export default class ContestDetail extends Vue {
   onTabChange(name: any) {
     switch (name) {
       case 'rank':
-        this.getContestRanking()
+        // this.getContestRanking()
         break
       case 'problem':
         this.getContestProblems()
@@ -518,7 +536,37 @@ export default class ContestDetail extends Vue {
     })
     .then(res => {
       this.total = res.data.total
-      this.status = res.data.list
+      this.status = res.data.list.map((item: any) => {
+        item.id = id
+        if (item.result === 'ACCEPTED') {
+          return {
+            ...item,
+            cellClassName: {
+              result: 'accept-class',
+            },
+          }
+        } else if (
+            item.result === 'WRONG_ANSWER' ||
+            item.result === 'TIME_LIMIT_EXCEEDED' ||
+            item.result === 'CPU_TIME_LIMIT_EXCEEDED' ||
+            item.result === 'MEMORY_LIMIT_EXCEEDED' ||
+            item.result === 'SYSTEM_ERROR' ||
+            item.result === 'RUNTIME_ERROR') {
+          return {
+            ...item,
+            cellClassName: {
+              result: 'err-class',
+            },
+          }
+        } else if (item.result === 'COMPILE_ERROR') {
+          return {
+            ...item,
+            cellClassName: {
+              result: 'warn-class',
+            }
+          }
+        }
+      })
     }).catch(err => {
       this.$Message.error(err.data.message)
     })
@@ -631,7 +679,6 @@ export default class ContestDetail extends Vue {
           ... item
         })
       })
-      console.log(that.problems)
     })
     .catch((error: any) => {
       console.log(error)

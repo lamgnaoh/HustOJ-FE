@@ -182,7 +182,6 @@ export default class ProblemDetail extends Vue {
   ]
 
   get logined() {
-    console.log(window.localStorage.getItem('token') != '')
     return window.localStorage.getItem('token') != ''
   }
 

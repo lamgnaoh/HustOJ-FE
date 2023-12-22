@@ -93,7 +93,6 @@ export default class Navbar extends Vue {
       api.user
       .getMyInfo()
       .then((res: any) => {
-        console.log(res.data())
         this.$store.commit('setUserInfo', res.data)
       })
       .catch((err: any) => {
@@ -136,6 +135,7 @@ export default class Navbar extends Vue {
     this.$store
     .dispatch('logout')
     .then(() => {
+      this.$Message.success("Logout successful")
       this.$router.replace('/')
     })
     .catch((err: any) => console.log('logout' + err))
