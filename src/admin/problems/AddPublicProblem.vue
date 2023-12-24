@@ -58,17 +58,23 @@ export default class AddPublicProblem extends Vue {
   @Prop({}) contestID: any
 
   handleAddProblem(problemId: number){
-    const data = {
-      id: this.contestID ,
-      problemId
-    }
-    api.addProblemToContest(data).then((res : any) =>{
-      this.$Message.success("Add successfully")
-      this.$emit('on-change');
-    }).catch((err : any) => {
-      this.$emit('on-change');
-      this.$Message.error(err.data.message)
-    } )
+    this.$prompt('Please input display id for the contest problem', 'confirm').then((value) => {
+
+      const data = {
+        id: this.contestID ,
+        problemId,
+        //@ts-ignore
+        problemCode: value.value
+      }
+      api.addProblemToContest(data).then((res : any) =>{
+        this.$Message.success("Add successfully")
+        this.$emit('on-change');
+      }).catch((err : any) => {
+        this.$emit('on-change');
+        this.$Message.error(err.data.message)
+      } )
+    }, () => {
+      })
   }
 
   getPublicProblem(page: number = 0){

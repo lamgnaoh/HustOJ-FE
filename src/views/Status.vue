@@ -334,7 +334,6 @@ export default class Status extends Vue {
           }
         }
       })
-      console.log(this.status)
       this.total = res.data.total
     })
     .catch((err: any) => {

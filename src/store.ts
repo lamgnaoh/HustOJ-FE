@@ -83,6 +83,10 @@ export default new Vuex.Store({
     getUserId(state) {
       // @ts-ignore
       return state.userInfo.id;
+    },
+    getContestType(state){
+      // @ts-ignore
+      return state.currentContest.contestRuleType
     }
   }
 })
