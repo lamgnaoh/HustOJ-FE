@@ -118,7 +118,7 @@ export default {
         params: { page: data.page, size: data.size },
       }),
   // Annoucement
-  getAllAnnouncements: (data: {}) =>
+  getAllAnnouncements: (data: {page: number, size: number}) =>
       axios.get('/api/v1/announcements', { params: data }),
   getAnnouncement: (data: { id: string }) =>
       axios.get(`/api/v1/announcements/${data.id}`),

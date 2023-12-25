@@ -5,10 +5,7 @@
               <span style="font-weight: 500;margin: 0 10px 0 10px;"
               >Auto Refresh：</span
               >
-        <i-switch v-model="autoRefresh" @on-change="refreshAuto" />
-      </Col>
-      <Col span="4" offset="22">
-        <Button type="primary" @click="exportRank">Export to csv</Button>
+        <i-switch :disabled="refreshDisabled" @on-change="refreshAuto" />
       </Col>
     </Row>
     <div class="echarts">
@@ -32,7 +29,6 @@ import {breakLongWords} from "@/util/util";
 @Component({})
 export default class OIContestRank extends Vue {
 
-  autoRefresh: boolean = false
   total: number = 0
   page: number = 1
   pageSize:number = 10
@@ -141,11 +137,21 @@ export default class OIContestRank extends Vue {
       }
     ]
   }
+  interval : any = null
+  get refreshDisabled() {
+    console.log(this.contest.status)
+    return this.contest.status === 'ENDED'
+  }
 
   refreshAuto(status: any) {
     if (status === true) {
       ;(this as any).$Message.success('Auto refresh')
+      this.interval = setInterval(() => {
+        this.page = 1
+        this.getContestRankData(1, this.pageSize)
+      }, 10000);
     } else {
+      clearInterval(this.interval)
       ;(this as any).$Message.success('Auto refresh off')
     }
   }

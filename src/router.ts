@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import problems from '@/views/Problems.vue'
 import status from '@/views/Status.vue'
 import contests from '@/views/Contests.vue'
-import group from '@/views/Group.vue'
+import home from '@/views/Home.vue'
 import login from '@/views/Login.vue'
 import register from '@/views/Register.vue'
 import forget from '@/views/Forget.vue'
@@ -35,7 +35,7 @@ const router = new Router({
     {
       path: '/',
       name: 'index',
-      component: problems,
+      component: home,
     },
     {
       path: '/problems',
@@ -76,11 +76,6 @@ const router = new Router({
       path: '/announcement/:id',
       name: 'announcement',
       component: announcement,
-    },
-    {
-      path: '/group',
-      name: 'group',
-      component: group,
     },
     {
       path: '/submission/:id',
@@ -157,7 +152,7 @@ const router = new Router({
           name: 'admin-announcement',
           component: () =>
               import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/normal/Announcement.vue'
+                  /* webpackChunkName: 'async-admin' */ '@/admin/announcement/Announcement.vue'
                   ),
         },
         {

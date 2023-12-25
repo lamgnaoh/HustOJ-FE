@@ -7,9 +7,6 @@
               >
         <i-switch v-model="autoRefresh" @on-change="refreshAuto" />
       </Col>
-      <Col span="4" offset="22">
-        <Button type="primary" @click="exportRank">Export to csv</Button>
-      </Col>
     </Row>
     <div class="echarts">
       <ECharts :options="options" ref="chart" auto-resize style="width: 100%"></ECharts>
@@ -198,9 +195,6 @@ export default class ACMContestRank extends Vue {
   }
 
   getContestRankData(page: number, pageSize: number) {
-    // if (this.showChart && !refresh) {
-    //   this.$refs.chart.showLoading({maskColor: 'rgba(250, 250, 250, 0.8)'})
-    // }
     // @ts-ignore
     const params = this.$route.params
     const contestId: string = params.id

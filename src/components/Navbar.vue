@@ -3,6 +3,10 @@
     <MenuItem name="home" class="oj-logo" to="/">HUST Online Judge</MenuItem>
     <div class="layout-nav">
       <div class="nav-left">
+        <MenuItem name="home" to="/">
+          <Icon type="md-home"></Icon>
+          Home
+        </MenuItem>
         <MenuItem name="problems" to="/problems">
           <Icon type="ios-keypad"></Icon>
           Problem
