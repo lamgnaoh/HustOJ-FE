@@ -118,6 +118,28 @@
           <TabPane label="Submission" name="submission">
             <Table :columns="title" :data="submission" border></Table>
           </TabPane>
+          <TabPane label="Comment" name="comment">
+            <div v-for="parentComment in comment">
+              <div class="parent-comment">
+                <Row>
+                  <div class="author">{{parentComment.authorName}}</div>
+                  <div class="time">{{parentComment.createDate}}</div>
+                </Row>
+                <Row>
+                  <div>{{parentComment.content}}</div>
+                </Row>
+              </div>
+              <div v-for="subComment in parentComment.listSubComment" class="sub-comment">
+                <Row>
+                  <div class="author">{{subComment.authorName}}</div>
+                  <div class="time">{{subComment.createDate}}</div>
+                </Row>
+                <Row>
+                  <div>{{subComment.content}}</div>
+                </Row>
+              </div>
+            </div>
+          </TabPane>
         </Tabs>
       </div>
     </Col>
@@ -180,6 +202,7 @@ export default class ProblemDetail extends Vue {
       key: 'result',
     },
   ]
+  comment: any = {}
 
   get logined() {
     return window.localStorage.getItem('token') != ''
@@ -295,13 +318,45 @@ export default class ProblemDetail extends Vue {
     })
   }
 
+  getComment() {
+    this.codeLoading = false
+    const params = this.$route.params
+    api
+    .getComment({problemId: params.id, page: 0, size: 10})
+    .then((res: any) => {
+      this.comment = res.data.list
+    })
+    .catch((err: any) => {
+      console.log(err, 'err')
+    })
+  }
+
   mounted() {
     this.getProblemDetail()
+    this.getComment()
   }
 }
 </script>
 
 <style lang="less" scoped>
+.parent-comment{
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  margin: 5px 0;
+}
+.sub-comment {
+  margin: 5px 5px 0 25px;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: whitesmoke;
+}
+.author {
+  font-weight: 700;
+}
+.time {
+  float: right;
+}
 .pro-status {
   text-align: left;
   margin-top: 32px;
