@@ -130,13 +130,21 @@
                          :create-date="subComment.createDate"
                          @reply="reply(subComment.parentCommentId)"></comment>
 
-                <el-input v-show="parentComment.id == activeId" :ref="'new_comment_' + parentComment.id" ref="test"
+                <el-input v-show="parentComment.id == activeId" :ref="'new_comment_' + parentComment.id"
                           v-model="newComment"
                           class="new-comment"
                           @keyup.enter="saveComment">
                   <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
                 </el-input>
               </div>
+            </div>
+            <div v-show="comment.length == 0 || activeId == -1">
+              <div v-if="comment.length == 0" style="text-align: left">There are no comment at the moment</div>
+              <el-input v-model="newComment"
+                        class="new-comment"
+                        @keyup.enter="saveComment">
+                <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
+              </el-input>
             </div>
           </TabPane>
         </Tabs>
