@@ -350,11 +350,12 @@ export default class ProblemDetail extends Vue {
   }
 
   reply(id: number) {
+    console.log(id)
     if (this.activeId == id) {
       this.activeId = -1
     } else {
       this.activeId = id
-      this.$refs['new_comment_' + id][0].focus();
+      // this.$refs['new_comment_' + id][0].focus();
     }
   }
 

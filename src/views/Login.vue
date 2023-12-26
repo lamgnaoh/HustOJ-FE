@@ -102,8 +102,8 @@ export default class Login extends Vue {
             this.$router.replace('/problems')
           }
         })
-        .catch(() => {
-          ;(this as any).$Message.error('Wrong user name or password')
+        .catch((err: any) => {
+          ;(this as any).$Message.error(err.data.message)
         })
       }
     })

@@ -160,7 +160,7 @@ export default {
   deleteGroup: (data: { id: string }) =>
       axios.delete(`/api/v1/groups/${data.id}`),
   getUser: (params: {}) => axios.get('/api/v1/users', { params }),
-  deleteUser: (data: {}) => axios.delete('/api/v1/users', data),
+  deleteUser: (data: {id: string}) => axios.delete(`/api/v1/users/${data.id}`),
   addUserToGroup: (data: { id: string; userId: string }) =>
       axios.post(`/api/v1/groups/${data.id}/members`, [data.userId]),
   createCommit: (data: { id: string; code: string; language: string }) =>
