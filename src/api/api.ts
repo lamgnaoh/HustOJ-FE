@@ -193,4 +193,6 @@ export default {
       axios.put(`/api/v1/submissions/${data.id}?result=${data.result}`),
   getComment: (data: { problemId: string, page: number; size: number }) =>
       axios.get(`/api/v1/comment/page?problemId=${data.problemId}&page=${data.page}&size=${data.size}`),
+  saveComment: (data: { problemId: string, parentCommentId: number, content: string}) =>
+      axios.post(`/api/v1/comment/save`, data),
 }

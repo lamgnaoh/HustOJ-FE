@@ -120,23 +120,22 @@
           </TabPane>
           <TabPane label="Comment" name="comment">
             <div v-for="parentComment in comment">
-              <div class="parent-comment">
-                <Row>
-                  <div class="author">{{parentComment.authorName}}</div>
-                  <div class="time">{{parentComment.createDate}}</div>
-                </Row>
-                <Row>
-                  <div>{{parentComment.content}}</div>
-                </Row>
-              </div>
-              <div v-for="subComment in parentComment.listSubComment" class="sub-comment">
-                <Row>
-                  <div class="author">{{subComment.authorName}}</div>
-                  <div class="time">{{subComment.createDate}}</div>
-                </Row>
-                <Row>
-                  <div>{{subComment.content}}</div>
-                </Row>
+              <comment :author="parentComment.authorName" :content="parentComment.content"
+                       :create-date="parentComment.createDate"
+                       @reply="reply(parentComment.id)" @showSubComment="reply(parentComment.id)"></comment>
+              <div v-show="parentComment.id == activeId" class="sub-comment">
+                <comment v-for="subComment in parentComment.listSubComment"
+                         :author="subComment.authorName"
+                         :content="subComment.content"
+                         :create-date="subComment.createDate"
+                         @reply="reply(subComment.parentCommentId)"></comment>
+
+                <el-input v-show="parentComment.id == activeId" :ref="'new_comment_' + parentComment.id" ref="test"
+                          v-model="newComment"
+                          class="new-comment"
+                          @keyup.enter="saveComment">
+                  <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
+                </el-input>
               </div>
             </div>
           </TabPane>
@@ -150,9 +149,11 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import api from '@/api/api'
 import CodeMirror from '@/components/CodeMirror.vue'
+import Comment from "@/views/Comment.vue";
 
 @Component({
   components: {
+    Comment,
     CodeMirror,
   },
 })
@@ -203,6 +204,8 @@ export default class ProblemDetail extends Vue {
     },
   ]
   comment: any = {}
+  newComment: string = ''
+  activeId: number = -1
 
   get logined() {
     return window.localStorage.getItem('token') != ''
@@ -331,6 +334,30 @@ export default class ProblemDetail extends Vue {
     })
   }
 
+  reply(id: number) {
+    if (this.activeId == id) {
+      this.activeId = -1
+    } else {
+      this.activeId = id
+      this.$refs['new_comment_' + id][0].focus();
+    }
+  }
+
+  saveComment() {
+    const params = this.$route.params
+    const data = {
+      problemId: params.id, parentCommentId: this.activeId, content: this.newComment
+    }
+    api.saveComment(data)
+        .then((res: any) => {
+          this.newComment = ''
+          this.getComment()
+        })
+        .catch((err: any) => {
+          console.log(err, 'err')
+        })
+  }
+
   mounted() {
     this.getProblemDetail()
     this.getComment()
@@ -339,23 +366,16 @@ export default class ProblemDetail extends Vue {
 </script>
 
 <style lang="less" scoped>
-.parent-comment{
-  padding: 10px 20px;
+.el-input__inner::v-deep {
   border-radius: 15px;
-  background-color: whitesmoke;
+}
+
+.new-comment {
+  border-radius: 15px;
   margin: 5px 0;
 }
 .sub-comment {
   margin: 5px 5px 0 25px;
-  padding: 10px 20px;
-  border-radius: 15px;
-  background-color: whitesmoke;
-}
-.author {
-  font-weight: 700;
-}
-.time {
-  float: right;
 }
 .pro-status {
   text-align: left;
