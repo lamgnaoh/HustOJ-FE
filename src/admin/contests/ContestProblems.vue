@@ -134,7 +134,7 @@ export default class ContestProblemList extends Vue {
     // Get all data
     this.problems = []
     api
-    .getContestProblems({
+    .adminGetContestProblems({
       page,
       pageSize,
       id: this.contestId,

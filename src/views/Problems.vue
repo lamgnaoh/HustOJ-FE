@@ -88,11 +88,6 @@
         >
           {{ tag.name }}
         </Button>
-<!--&lt;!&ndash;        Todo&ndash;&gt;-->
-<!--        <Button long  @click="getProblems()">-->
-<!--          <Icon type="md-shuffle" />-->
-<!--          Pick one-->
-<!--        </Button>-->
       </Card>
     </Col>
   </Row>
@@ -114,23 +109,6 @@ export default class Problems extends Vue {
   total: any = 0
   addTags: Array<number> = []
   difficulty: string= ''
-
-  getAllAnnouncements() {
-    api
-    .getAllAnnouncements({})
-    .then((res: any) => {
-      this.announcements = res.data
-    })
-    .catch((err: any) => {
-      console.log(err, 'err')
-    })
-  }
-
-  announcementDetail(id: string) {
-    this.$router.push({
-      path: `/announcement/${id}`,
-    })
-  }
 
   level(level: string) {
     switch (level) {

@@ -1,66 +1,167 @@
 <template>
-  <Row>
-    <Col span="16" offset="4" style="padding-top: 40px">
-      <div
-          class="paddingTop"
-          v-for="(announcement, index) in announcements"
-          :key="index"
-      >
-        <h1>{{ announcement.title }}</h1>
-        <p>
-          <span>Author：{{ announcement.authorName }}</span
-          ><span>Modified Date：{{ announcement.modifiedDate }}</span>
-        </p>
-        <p class="content" v-html="announcement.content"></p>
+  <PanelOJ shadow :padding="10">
+    <div slot="title" style="text-align: left">
+      Announcement
+    </div>
+    <div slot="extra">
+      <Button v-if="listVisible" type="info" @click="init" :loading="btnLoading">Refresh</Button>
+      <Button v-else type="info" icon="ios-undo" @click="goBack">Back</Button>
+    </div>
+    <transition-group name="announcement-animate" mode="in-out">
+      <div class="no-announcement" v-if="!announcements.length" key="no-announcement">
+        <p>No announcement</p>
       </div>
-    </Col>
-  </Row>
+      <template v-if="listVisible">
+        <ul class="announcements-container" key="list">
+          <li v-for="announcement in announcements" :key="announcement.title">
+            <div class="flex-container">
+              <div class="title"><a class="entry" @click="goAnnouncement(announcement)">
+                {{ announcement.title }}</a></div>
+              <div class="date">{{ announcement.createDate }}</div>
+              <div class="creator"> By {{ announcement.authorName }}</div>
+            </div>
+          </li>
+        </ul>
+        <Page v-if="!isContest"
+              key="page"
+              style="text-align: center;"
+              :total="total"
+              :page-size="limit"
+              @on-change="getAnnouncements">
+        </Page>
+      </template>
+      <template v-else>
+        <div v-html="announcement.content" key="content" class="content-container"></div>
+      </template>
+    </transition-group>
+  </PanelOJ>
+
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 import api from '../api/api'
+import PanelOJ from "@/components/PanelOJ.vue";
 
-@Component
-export default class Index extends Vue {
+@Component({
+  components: {
+    PanelOJ
+  }
+})
+export default class Announcement extends Vue {
   announcements: any = []
+  listVisible: boolean = true
+  announcement: any = null
+  isContest: boolean = false
+  total: number = 10
+  limit: number = 10
+  page: number = 0
+  btnLoading: boolean = false
 
-  getAnnouncement() {
-    const params = this.$route.params
-    const id: string = params.id
-    const that = this
+  getAnnouncements() {
+    this.btnLoading = true
     api
-    .getAnnouncement({ id })
+    .getAllAnnouncements({
+      page: this.page,
+      size: this.limit
+    })
     .then((res: any) => {
-      that.announcements.push({
-        authorId: res.data.authorId,
-        authorName: res.data.authorName,
-        content: res.data.content,
-        id: res.data.id,
-        modifiedDate: res.data.modifiedDate,
-        title: res.data.title,
+      this.btnLoading = false
+      res.data.list.forEach((item: any) => {
+        this.announcements.push({
+          authorId: item.authorId,
+          authorName: item.authorName,
+          content: item.content,
+          id: item.id,
+          modifiedDate: item.modifiedDate,
+          createDate: item.createDate,
+          title: item.title,
+        })
       })
     })
     .catch((err: any) => {
+      this.btnLoading = false
       ;(this as any).$Message.error(err.data.message)
     })
   }
 
+  goAnnouncement(announcement: any) {
+    console.log(announcement)
+    this.announcement = announcement
+    this.listVisible = false
+  }
+
+  goBack () {
+    this.listVisible = true
+    this.announcement = null
+  }
+
+  init(){
+    this.announcements = []
+    this.getAnnouncements()
+  }
+
   mounted() {
-    this.getAnnouncement()
+    this.getAnnouncements()
   }
 }
 </script>
 
 <style lang="less" scoped>
-.paddingTop {
-  padding-top: 30px;
-  p {
-    padding-top: 20px;
-    span {
-      margin: 0 20px 0 20px;
+.announcements-container {
+  margin-top: -10px;
+  margin-bottom: 10px;
+
+  li {
+    padding-top: 15px;
+    list-style: none;
+    padding-bottom: 15px;
+    margin-left: 20px;
+    font-size: 16px;
+    border: 1px solid rgba(187, 187, 187, 0.5);
+    .flex-container {
+      .title {
+        flex: 1 1;
+        text-align: left;
+        padding-left: 10px;
+
+        a.entry {
+          color: #495060;
+
+          &:hover {
+            color: #2d8cf0;
+            border-bottom: 1px solid #2d8cf0;
+          }
+        }
+      }
+
+      .creator {
+        flex: none;
+        width: 200px;
+        text-align: center;
+
+      }
+
+      .date {
+        flex: none;
+        width: 200px;
+        text-align: center;
+      }
     }
   }
+}
+
+.content-container {
+  padding: 0 20px 20px 20px;
+  text-align: left;
+}
+
+.no-announcement {
+  text-align: center;
+  font-size: 16px;
+}
+.announcement-animate-enter-active {
+  animation: fadeIn 1s;
 }
 
 .content {

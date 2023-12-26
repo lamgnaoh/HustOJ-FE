@@ -213,6 +213,13 @@ export default class Submission extends Vue {
               result: 'accept-class',
             },
           }
+        }  else if (item.result === 'COMPILE_ERROR') {
+          return {
+            ...item,
+            cellClassName: {
+              result: 'warn-class',
+            },
+          }
         } else {
           return {
             ...item,
@@ -254,6 +261,10 @@ export default class Submission extends Vue {
 
 .ivu-table .err-class {
   color: #a94442 !important;
+  background-color: rgb(242, 222, 222) !important;
+}
+.ivu-table .warn-class {
+  color: #e5a455 !important;
   background-color: rgb(242, 222, 222) !important;
 }
 </style>

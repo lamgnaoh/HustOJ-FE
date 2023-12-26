@@ -24,8 +24,11 @@ export function countInterval(sd: any, ed: any) {
     continued += min + ' minute '
     interval -= min * 60
   }
-  if (interval < 60) {
+  if (interval < 60 && interval > 0 ) {
     continued += Math.floor(interval) + ' second '
+  }
+  if (interval < 0){
+    return ''
   }
   return continued
 }
@@ -68,4 +71,14 @@ export function downloadFile(url: string){
       Vue.prototype.$Message.error("Cannot download")
     })
   })
+}
+
+export function breakLongWords (value: string, length = 16) {
+  let re
+  if (escape(value).indexOf('%u') === -1) {
+    re = new RegExp('(.{' + length + '})', 'g')
+  } else {
+    re = new RegExp('(.{' + (length / 2 + 1) + '})', 'g')
+  }
+  return value.replace(re, '$1\n')
 }

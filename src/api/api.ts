@@ -13,6 +13,8 @@ export default {
       axios.get(`/api/v1/problems/${data.id}/admin`),
   getContestProblems: (data: { page:number , pageSize:number , id: string , keyword: string }) =>
     axios.get(`/api/v1/contests/${data.id}/problems`, { params: data }),
+  adminGetContestProblems: (data: { page:number , pageSize:number , id: string , keyword: string }) =>
+      axios.get(`/api/v1/contests/${data.id}/problems/admin`, { params: data }),
   getContestProblemsDetail: (data: { cid: string; pid: string }) =>
       axios.get(`/api/v1/contests/${data.cid}/problems/${data.pid}`),
   deleteProblem: (data: { id: string }) =>
@@ -64,20 +66,12 @@ export default {
   }) => axios.put(`/api/v1/contests/${data.contestId}`, data.contest),
   deleteContest: (data: { id: string }) =>
       axios.delete(`/api/v1/contests/${data.id}`),
-  deleteProblemsInContest: (data: { id: string; problemArray: number[] }) =>
-      axios.delete(`/api/v1/contests/${data.id}/problems`, {
-        data: data.problemArray,
-      }),
   getAllProblemsFromASpecificContest: (data: { id: string }) =>
       axios.get(`/api/v1/contests/${data.id}/problems`),
-  addProblemToContest: (data: { id: string; problemId: number }) =>
-      axios.post(`/api/v1/contests/${data.id}/problem/add`, data.problemId,{
+  addProblemToContest: (data: { id: string; problemId: number , problemCode: string }) =>
+      axios.post(`/api/v1/contests/${data.id}/problem/add`, {problemId: data.problemId , problemCode: data.problemCode},{
         headers: { 'Content-Type': 'application/json'}
       }),
-  setProblemScore: (data: { id: string; problemId: string; score: number }) =>
-      axios.post(
-          `/api/v1/contests/${data.id}/problems/add?problemId=${data.problemId}&&score=${data.score}`
-      ),
   getProblemsIdByTitle: (data: {}) =>
       axios.get('/api/v1/problems', { params: data }),
   adminGetProblemsIdByTitle: (data: {}) =>
@@ -124,7 +118,7 @@ export default {
         params: { page: data.page, size: data.size },
       }),
   // Annoucement
-  getAllAnnouncements: (data: {}) =>
+  getAllAnnouncements: (data: {page: number, size: number}) =>
       axios.get('/api/v1/announcements', { params: data }),
   getAnnouncement: (data: { id: string }) =>
       axios.get(`/api/v1/announcements/${data.id}`),
@@ -139,7 +133,7 @@ export default {
       axios.delete(`/api/v1/announcements/${data.id}`),
   // Ranking
   getRank: (data: {}) => axios.get('/api/v1/users/ranking', { params: data }),
-  // 问题
+  // question forget password
   getOwnQuestion: (data: { username: string }) =>
       axios.get(`/api/v1/questions/random?username=${data.username}`),
   checkAnswer: (data: { username: string; id: any; answer: any }) =>

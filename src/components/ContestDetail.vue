@@ -29,7 +29,7 @@
       <Tabs
           value="detail"
           style="padding-top: 40px;"
-          v-on:on-click="onTabChange"
+          @on-click="onTabChange"
       >
         <TabPane label="Contest details" name="detail" class="pane-padding">
           <h1>{{ contest.name }}</h1>
@@ -47,89 +47,13 @@
             style="text-align: left"
             class="pane-padding"
         >
-          <Row>
-            <Col span="8">
-              <span style="font-weight: 500;margin: 0 10px 0 10px;"
-              >Auto Refresh：</span
-              >
-              <i-switch v-model="autoRefresh" @on-change="refreshAuto" />
-            </Col>
-            <Col span="4">
-              <Button type="primary" @click="exportRank">Export</Button>
-            </Col>
-          </Row>
-          <table style="margin-top: 20px;">
-            <tbody>
-            <tr class="first-title">
-              <td style="width:30px;">#</td>
-              <td style="width:100px;">Username</td>
-              <td style="width:100px;">AC/Total Submit</td>
-              <td
-                  style="width:100px;"
-                  v-if="contest.contestRuleType === 'ACM'"
-              >
-                Time cost + Penalty time
-              </td>
-              <td style="width:100px;" v-else>Total score</td>
-              <td
-                  v-for="item in problemKey"
-                  :key="item"
-                  style="width: 100px;"
-              >
-                {{ item }}
-              </td>
-            </tr>
-            <tr
-                class="second-title"
-                v-for="(user, index) in ranking"
-                :key="index"
-            >
-              <td>{{ index + 1 }}</td>
-              <td>{{ user.userName }}</td>
-              <td>{{ user.acceptCount }}/{{ user.submitCount }}</td>
-              <td v-if="contest.contestRuleType === 'ACM'">
-                <p v-html="timetrans(user.time)"></p>
-                <p v-if="user.errorCount !== 0">(-{{ user.errorCount }})</p>
-              </td>
-              <td v-else>
-                <p>{{ user.score }}</p>
-              </td>
-              <!--<template v-for="key in problemKey">-->
-              <template v-for="(problem, key) in user.timeList">
-                <template v-if="contest.contestRuleType === 'ACM'">
-                  <template v-if="problem.submitted === true">
-                    <td
-                        v-if="problem.passed === true"
-                        :class="choose(problem.firstPassed)"
-                    >
-                      <div>{{ timetrans(problem.totalTime) }}</div>
-                      <div v-if="problem.errorCount !== 0">
-                        (-{{ problem.errorCount }})
-                      </div>
-                    </td>
-                    <td v-else class="red">
-                      <p v-html="timetrans(problem.totalTime)"></p>
-                      <p v-if="problem.errorCount !== 0">
-                        (-{{ problem.errorCount }})
-                      </p>
-                    </td>
-                  </template>
-                  <td v-else class="not-submitted"></td>
-                </template>
-                <template v-else>
-                  <td :class="problem.submitted ? 'green' : 'red'">
-                    <p>{{ problem.score }}</p>
-                  </td>
-                </template>
-              </template>
-            </tr>
-            </tbody>
-          </table>
+          <component :is="currentView">
+          </component>
         </TabPane>
         <TabPane
             label="Submission"
             name="submit"
-            v-if="showContestSubmission()"
+            v-if="showContestSubmissionTab()"
             style="text-align: left"
             class="pane-padding"
         >
@@ -152,13 +76,18 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import api from '@/api/api'
-import { UserRole } from '../types/user'
 import { RankingQuery } from '../types/ranking'
-import axios from 'axios'
 import { countInterval } from '@/util/util'
-@Component
+import ACMContestRank from "@/components/ACMContestRank.vue";
+import OIContestRank from "@/components/OIContestRank.vue";
+@Component({
+  components: {
+    ACMContestRank,
+    OIContestRank
+  },
+})
 export default class ContestDetail extends Vue {
-  show: boolean = false
+  // show: boolean = false
   modalPassword: boolean = false
   modal: boolean = false
   modalTitle: string = ''
@@ -220,6 +149,14 @@ export default class ContestDetail extends Vue {
       width: 80,
     },
     {
+      title: 'Code',
+      key: 'index',
+      render: (h: any, obj: any) => {
+        return h('span', obj.row.problemCode)
+      },
+      width: 80,
+    },
+    {
       title: 'Problem title',
       key: 'title',
       className: 'pointer-class',
@@ -255,16 +192,9 @@ export default class ContestDetail extends Vue {
     },
   ]
   problems: any = []
-  autoRefresh: any = false
-  ranking: Array<any> = []
-
+  rankingUser: Array<any> = []
   name: string = ''
   author: string = ''
-  groupSearch: Array<any> = []
-  authorSearch: Array<any> = []
-  groupSelect: string = ''
-  authorSelect: string = ''
-
   page: number = 0
   pageSize: number = 10
   total: number = 0
@@ -429,81 +359,24 @@ export default class ContestDetail extends Vue {
       this.getContestRanking()
     }
   }
-  showContestSubmission(){
-    return (this.role != "ROLE_USER" &&
+
+  get currentView(){
+    return this.$store.getters.getContestType === 'ACM' ? 'ACMContestRank' : 'OIContestRank'
+  }
+  showContestSubmissionTab(){
+    return (this.$store.state.userInfo.authorities[0].authority != "ROLE_USER" &&
         this.$store.state.currentContest.authorId == this.$store.getters.getUserId ) ||
         this.$store.getters.isSuperAdmin
   }
 
-  get role() {
-    return this.$store.state.userInfo.authorities[0].authority
-  }
-
-  getGroupsByName(name: string) {
-    this.authorSelect = ''
-    this.author = ''
-    api
-    .getGroups({ name })
-    .then(res => {
-      this.groupSearch = res.data.list
-    })
-    .catch((err: any) => {
-      ;(this as any).$Message.error(err.data.message)
-    })
-  }
-
-  selectedGroup(id: any) {
-    this.groupSelect = id
-    this.getContestRanking({
-      groupId: this.groupSelect,
-      // teacherId: this.authorSelect,
-    })
-  }
-
-  getAuthorByName() {
-    api
-    .getUser({
-      role: UserRole.ADMIN,
-    })
-    .then(res => {
-      this.authorSearch = res.data.list
-    })
-    .catch((err: any) => {
-      ;(this as any).$Message.error(err.data.message)
-    })
-  }
-
-  selectedAuthor(id: any) {
-    this.authorSelect = id
-    this.getContestRanking({
-      // groupId: this.groupSelect,
-      teacherId: this.authorSelect,
-    })
-  }
-
-  timetrans(time: string) {
-    const date = new Date(time)
-    const h =
-        date.getHours() - 8 < 10
-            ? '0' + (date.getHours() - 8)
-            : date.getHours() - 8
-    const m =
-        date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-    const s =
-        date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-    return h + ':' + m + ':' + s
-  }
-
   onTabChange(name: any) {
     switch (name) {
-      case 'rank':
-        // this.getContestRanking()
-        break
       case 'problem':
         this.getContestProblems()
         break
       case 'submit':
         this.getAllSubmissionOfContest()
+        break
       default:
         break
     }
@@ -570,22 +443,6 @@ export default class ContestDetail extends Vue {
     }).catch(err => {
       this.$Message.error(err.data.message)
     })
-  }
-
-  choose(status: boolean) {
-    if (status) {
-      return 'deepGreen'
-    } else {
-      return 'green'
-    }
-  }
-
-  refreshAuto(status: any) {
-    if (status === true) {
-      ;(this as any).$Message.success('Auto refresh')
-    } else {
-      ;(this as any).$Message.success('Auto refresh off')
-    }
   }
 
   findStatus(value: any) {
@@ -718,40 +575,6 @@ export default class ContestDetail extends Vue {
     })
   }
 
-  download(data: any) {
-    if (!data) {
-      return
-    }
-    let url = window.URL.createObjectURL(
-        new Blob([data], {
-          type: 'application/octet-stream',
-        })
-    )
-    let link = document.createElement('a')
-    link.style.display = 'none'
-    link.href = url
-    link.setAttribute('download', 'ranking.xlsx')
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
-  exportRank() {
-    const params = this.$route.params
-    const id: string = params.id
-    const rankParams = {
-      groupId: this.groupSelect,
-      teacherId: this.authorSelect,
-    }
-    axios({
-      url: `/api/v1/contests/${id}/ranking/export`,
-      method: 'get',
-      responseType: 'arraybuffer',
-      params: rankParams,
-    }).then(res => {
-      this.download(res.data)
-    })
-  }
 
   getContestRanking(query?: RankingQuery) {
     const params = this.$route.params
@@ -761,10 +584,10 @@ export default class ContestDetail extends Vue {
     .then((res: any) => {
       if (res.data.rankingUserList.length > 0) {
         this.problemKey = Object.keys(res.data.rankingUserList[0].timeList)
-        this.ranking = res.data.rankingUserList
+        this.rankingUser = res.data.rankingUserList
       } else {
         this.problemKey = []
-        this.ranking = []
+        this.rankingUser = []
       }
     })
     .catch((err: any) => {
@@ -774,9 +597,6 @@ export default class ContestDetail extends Vue {
 
   mounted() {
     this.getContestDetail()
-    setTimeout(() => {
-      this.show = true
-    }, 1)
   }
 }
 </script>

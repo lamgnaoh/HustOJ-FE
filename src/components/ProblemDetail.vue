@@ -286,6 +286,13 @@ export default class ProblemDetail extends Vue {
                 result: 'accept-class',
               },
             }
+          } else if (item.result === 'COMPILE_ERROR') {
+            return {
+              ...item,
+              cellClassName: {
+                result: 'warn-class',
+              },
+            }
           } else {
             return {
               ...item,
