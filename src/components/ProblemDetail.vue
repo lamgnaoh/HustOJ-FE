@@ -118,6 +118,27 @@
           <TabPane label="Submission" name="submission">
             <Table :columns="title" :data="submission" border></Table>
           </TabPane>
+          <TabPane label="Comment" name="comment">
+            <div v-for="parentComment in comment">
+              <comment :author="parentComment.authorName" :content="parentComment.content"
+                       :create-date="parentComment.createDate"
+                       @reply="reply(parentComment.id)" @showSubComment="reply(parentComment.id)"></comment>
+              <div v-show="parentComment.id == activeId" class="sub-comment">
+                <comment v-for="subComment in parentComment.listSubComment"
+                         :author="subComment.authorName"
+                         :content="subComment.content"
+                         :create-date="subComment.createDate"
+                         @reply="reply(subComment.parentCommentId)"></comment>
+
+                <el-input v-show="parentComment.id == activeId" :ref="'new_comment_' + parentComment.id" ref="test"
+                          v-model="newComment"
+                          class="new-comment"
+                          @keyup.enter="saveComment">
+                  <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
+                </el-input>
+              </div>
+            </div>
+          </TabPane>
         </Tabs>
       </div>
     </Col>
@@ -128,9 +149,11 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import api from '@/api/api'
 import CodeMirror from '@/components/CodeMirror.vue'
+import Comment from "@/views/Comment.vue";
 
 @Component({
   components: {
+    Comment,
     CodeMirror,
   },
 })
@@ -180,6 +203,9 @@ export default class ProblemDetail extends Vue {
       key: 'result',
     },
   ]
+  comment: any = {}
+  newComment: string = ''
+  activeId: number = -1
 
   get logined() {
     return window.localStorage.getItem('token') != ''
@@ -302,13 +328,62 @@ export default class ProblemDetail extends Vue {
     })
   }
 
+  getComment() {
+    this.codeLoading = false
+    const params = this.$route.params
+    api
+    .getComment({problemId: params.id, page: 0, size: 10})
+    .then((res: any) => {
+      this.comment = res.data.list
+    })
+    .catch((err: any) => {
+      console.log(err, 'err')
+    })
+  }
+
+  reply(id: number) {
+    if (this.activeId == id) {
+      this.activeId = -1
+    } else {
+      this.activeId = id
+      this.$refs['new_comment_' + id][0].focus();
+    }
+  }
+
+  saveComment() {
+    const params = this.$route.params
+    const data = {
+      problemId: params.id, parentCommentId: this.activeId, content: this.newComment
+    }
+    api.saveComment(data)
+        .then((res: any) => {
+          this.newComment = ''
+          this.getComment()
+        })
+        .catch((err: any) => {
+          console.log(err, 'err')
+        })
+  }
+
   mounted() {
     this.getProblemDetail()
+    this.getComment()
   }
 }
 </script>
 
 <style lang="less" scoped>
+.el-input__inner::v-deep {
+  border-radius: 15px;
+}
+
+.new-comment {
+  border-radius: 15px;
+  margin: 5px 0;
+}
+.sub-comment {
+  margin: 5px 5px 0 25px;
+}
 .pro-status {
   text-align: left;
   margin-top: 32px;
