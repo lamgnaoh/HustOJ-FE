@@ -13,7 +13,7 @@ import rank from '@/views/Rank.vue'
 import personal from '@/views/Personal.vue'
 import submission from '@/views/Submission.vue'
 import share from '@/views/Share.vue'
-import setting from '@/views/Setting.vue'
+import setting from '@/views/setting/Setting.vue'
 
 import problemDetail from '@/components/ProblemDetail.vue'
 import contestDetail from '@/components/ContestDetail.vue'
@@ -21,6 +21,7 @@ import announcement from '@/components/Announcement.vue'
 import contestProblemDetail from '@/components/ContestProblemDetail.vue'
 
 import adminIndex from '@/admin/adminIndex.vue'
+import accountSetting from "@/views/AccountSetting.vue";
 
 Vue.use(Router)
 const routerPush = Router.prototype.push
@@ -120,7 +121,7 @@ const router = new Router({
     {
       path: '/setting/:id',
       name: 'setting',
-      component: setting,
+      component: accountSetting,
     },
     {
       path: '/admin',

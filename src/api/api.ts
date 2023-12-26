@@ -189,4 +189,7 @@ export default {
       axios.get(`/api/v1/comment/page?problemId=${data.problemId}&page=${data.page}&size=${data.size}`),
   saveComment: (data: { problemId: string, parentCommentId: number, content: string}) =>
       axios.post(`/api/v1/comment/save`, data),
+
+  changePassword: (data: {}) => axios.post('/api/v1/me/changePassword', data),
+  changeEmail : (data: {}) => axios.post('/api/v1/me/changeEmail', data)
 }

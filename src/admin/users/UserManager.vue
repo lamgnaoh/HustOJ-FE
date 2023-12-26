@@ -12,7 +12,7 @@
           <li class="name">Full name</li>
           <li class="username">Username</li>
           <li class="mail">Mail</li>
-          <li class="diff">Accept count/Submit count</li>
+          <li class="diff">Accept count</li>
           <li class="diff">AC rate</li>
           <li class="rate">Role</li>
           <li class="rate">Modify</li>
@@ -26,7 +26,7 @@
           <li class="name">{{ user.name }}</li>
           <li class="username">{{ user.username }}</li>
           <li class="mail">{{ user.email }}</li>
-          <li class="diff">{{ user.acCount }}/{{ user.submitCount }}</li>
+          <li class="diff">{{ user.acCount}}</li>
           <li class="diff">{{ (user.acRate * 100).toFixed(2) }}%</li>
           <li class="rate">{{ getRole(user) }}</li>
           <li class="rate">
@@ -53,7 +53,6 @@
             <div>Email</div>
             <div>First name</div>
             <div>Last name</div>
-            <!--            <div>School</div>-->
             <div>Role</div>
           </div>
           <div>
@@ -62,7 +61,6 @@
             <Input v-model="newUser.email" />
             <Input v-model="newUser.firstname" />
             <Input v-model="newUser.lastname" />
-            <!--            <Input v-model="newUser.school" />-->
             <Select v-model="role" style="width:200px">
               <Option
                   v-for="item in roleList"
@@ -89,7 +87,6 @@
             <div>Email</div>
             <div>First name</div>
             <div>Last name</div>
-            <!--            <div>School</div>-->
             <div>Role</div>
           </div>
           <div>

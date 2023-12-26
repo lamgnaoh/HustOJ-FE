@@ -37,9 +37,6 @@
             <MenuItem name="/admin/user-manager" to="/admin/user-manager">
               User
             </MenuItem>
-            <MenuItem name="/admin/logs" to="/admin/logs">
-              Logs record
-            </MenuItem>
           </Submenu>
           <Submenu name="Problem" align="left">
             <template #title>
