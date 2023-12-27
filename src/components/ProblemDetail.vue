@@ -122,29 +122,23 @@
             <div v-for="parentComment in comment">
               <comment :author="parentComment.authorName" :content="parentComment.content"
                        :create-date="parentComment.createDate"
-                       @reply="reply(parentComment.id)" @showSubComment="reply(parentComment.id)"></comment>
+                       :isShowSubComment="parentComment.id == activeId"
+                       @reply="reply(parentComment.id)"
+                       @showSubComment="showMore(parentComment.id)"></comment>
               <div v-show="parentComment.id == activeId" class="sub-comment">
                 <comment v-for="subComment in parentComment.listSubComment"
                          :author="subComment.authorName"
                          :content="subComment.content"
                          :create-date="subComment.createDate"
+                         :sub-comment="true"
                          @reply="reply(subComment.parentCommentId)"></comment>
-
-                <el-input v-show="parentComment.id == activeId" :ref="'new_comment_' + parentComment.id"
-                          v-model="newComment"
-                          class="new-comment"
-                          @keyup.enter="saveComment">
-                  <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
-                </el-input>
+                <new-comment v-show="parentComment.id == activeId"
+                             @saveComment="saveComment"></new-comment>
               </div>
             </div>
             <div v-show="comment.length == 0 || activeId == -1">
               <div v-if="comment.length == 0" style="text-align: left">There are no comment at the moment</div>
-              <el-input v-model="newComment"
-                        class="new-comment"
-                        @keyup.enter="saveComment">
-                <i slot="suffix" class="el-input__icon el-icon-s-promotion" @click="saveComment"></i>
-              </el-input>
+              <new-comment @saveComment="saveComment"></new-comment>
             </div>
           </TabPane>
         </Tabs>
@@ -157,10 +151,12 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import api from '@/api/api'
 import CodeMirror from '@/components/CodeMirror.vue'
-import Comment from "@/views/Comment.vue";
+import Comment from "@/components/Comment.vue";
+import NewComment from "@/components/NewComment.vue";
 
 @Component({
   components: {
+    NewComment,
     Comment,
     CodeMirror,
   },
@@ -212,7 +208,6 @@ export default class ProblemDetail extends Vue {
     },
   ]
   comment: any = {}
-  newComment: string = ''
   activeId: number = -1
 
   get logined() {
@@ -350,23 +345,24 @@ export default class ProblemDetail extends Vue {
   }
 
   reply(id: number) {
-    console.log(id)
+    this.activeId = id
+  }
+
+  showMore(id: number) {
     if (this.activeId == id) {
       this.activeId = -1
     } else {
       this.activeId = id
-      // this.$refs['new_comment_' + id][0].focus();
     }
   }
 
-  saveComment() {
+  saveComment(newComment: string) {
     const params = this.$route.params
     const data = {
-      problemId: params.id, parentCommentId: this.activeId, content: this.newComment
+      problemId: params.id, parentCommentId: this.activeId, content: newComment
     }
     api.saveComment(data)
         .then((res: any) => {
-          this.newComment = ''
           this.getComment()
         })
         .catch((err: any) => {
@@ -382,6 +378,15 @@ export default class ProblemDetail extends Vue {
 </script>
 
 <style lang="less" scoped>
+.avatar-circle {
+  margin: 6px 0;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background-color: #f2dede;
+  line-height: 40px;
+}
+
 .el-input__inner::v-deep {
   border-radius: 15px;
 }
@@ -391,7 +396,7 @@ export default class ProblemDetail extends Vue {
   margin: 5px 0;
 }
 .sub-comment {
-  margin: 5px 5px 0 25px;
+  margin: 5px 5px 0 55px;
 }
 .pro-status {
   text-align: left;

@@ -21,6 +21,20 @@ export default class Comment extends Vue {
   })
   createDate: string
 
+  @Prop({
+    type: Boolean,
+    required: false,
+    default: false
+  })
+  subComment: boolean
+
+  @Prop({
+    type: Boolean,
+    required: false,
+    default: false
+  })
+  isShowSubComment: boolean;
+
   displayDate() {
     let datetime = Date.parse(this.createDate)
     let current = new Date().getTime()
@@ -52,29 +66,41 @@ export default class Comment extends Vue {
 </script>
 
 <template>
-  <div>
-    <div class="comment">
+  <Row>
+    <Col :span="1">
+      <div class="avatar-circle">{{ author.slice(0, 2).toUpperCase() }}</div>
+    </Col>
+    <Col :span="23">
+      <div class="comment">
+        <Row>
+          <div class="author">{{ author }}</div>
+        </Row>
+        <Row>
+          <div class="content">{{ content }}</div>
+        </Row>
+      </div>
       <Row>
-        <div class="author">{{ author }}</div>
+        <Col class="time">{{ displayDate() }}</Col>
+        <Col class="reply">
+          <div @click="reply()">Reply</div>
+        </Col>
+        <Col v-show="!subComment" class="reply">
+          <div @click="showSubComment()">{{ isShowSubComment ? "Hide all" : "Show more" }}</div>
+        </Col>
       </Row>
-      <Row>
-        <div class="content">{{ content }}</div>
-      </Row>
-    </div>
-    <Row>
-      <Col class="time">{{ displayDate() }}</Col>
-      <Col class="reply">
-        <div @click="reply()">Reply</div>
-      </Col>
-      <Col class="reply">
-        <div @click="showSubComment()">Show more</div>
-      </Col>
-
-    </Row>
-  </div>
+    </Col>
+  </Row>
 </template>
 
 <style lang="less" scoped>
+.avatar-circle {
+  margin: 6px 0;
+  background-color: #f2dede;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
 .comment {
   padding: 8px 12px;
   border-radius: 12px;
