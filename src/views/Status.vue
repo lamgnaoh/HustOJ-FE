@@ -28,7 +28,7 @@
         </ul>
       </Col>
       <div style="padding: 0 50px;">
-        <Table :columns="title" :data="status"></Table>
+        <Table :columns="title" :data="status" :width="1400"></Table>
       </div>
       <div style="padding-top: 30px;">
         <Page

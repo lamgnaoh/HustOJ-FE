@@ -1,7 +1,7 @@
 <template>
   <Menu mode="horizontal" :active-name="activeName" class="header">
     <MenuItem name="home" class="oj-logo" to="/">
-      <img src="src/assets/logo.png" alt="" class="logo"/> <span>HUST Online Judge</span>
+      <img src="@/assets/logo.png" alt="" class="logo"/> <span>HUST Online Judge</span>
     </MenuItem>
     <div class="layout-nav">
       <div class="nav-left">
@@ -153,7 +153,7 @@ export default class Navbar extends Vue {
   width: 23px;
   position: relative;
   top: 9px;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .header {
