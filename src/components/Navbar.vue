@@ -26,10 +26,9 @@
         <Submenu name="3">
           <template slot="title">
             <Icon type="md-information-circle"></Icon>
-            About
+            Help
           </template>
           <MenuItem name="help" to="/help">Help</MenuItem>
-          <MenuItem name="about" to="/about">About</MenuItem>
         </Submenu>
       </div>
       <div class="nav-right">

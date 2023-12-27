@@ -203,6 +203,13 @@ export default class ProblemDetail extends Vue {
       key: 'duration',
     },
     {
+      title: 'Memory',
+      key: 'memory',
+      render: (h: any, obj: any) => {
+        return h('span', obj.row.memory !=null ? (obj.row.memory / (1024*1024)).toFixed(0) + ' mb' : '--')
+      },
+    },
+    {
       title: 'Result',
       key: 'result',
     },

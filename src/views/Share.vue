@@ -35,11 +35,11 @@
             </tr>
             <tr>
               <td>Memory:</td>
-              <td>{{ errMsg.memory }}</td>
+              <td>{{ (errMsg.memory / (1024*1024)).toFixed(0) + ' mb' }} <span v-if="commit.result === 'ACCEPTED'"> , Beat <Tag color="success">{{commit.memoryPercentile.toFixed(2)}}</Tag>  %</span> </td>
             </tr>
             <tr>
-              <td>Real time:</td>
-              <td>{{ errMsg.realTime }}</td>
+              <td>Duration:</td>
+              <td>{{ errMsg.realTime }} ms<span v-if="commit.result === 'ACCEPTED'">, Beat <Tag color="primary" >{{commit.durationPercentile.toFixed(2)}}</Tag>  %</span> </td>
             </tr>
             <tr>
               <td>CPU Time Limit Exceeded:</td>
@@ -126,6 +126,7 @@ export default class Share extends Vue {
     api
     .getCommit({ id: params.id })
     .then((res: any) => {
+      console.log(res.data)
       this.commit = res.data
       this.sourceCode = res.data.code.replace(/\\n/g, '\n')
       this.title = res.data.problemTitle
@@ -134,6 +135,7 @@ export default class Share extends Vue {
     .catch((err: any) => {
       ;(this as any).$Message.error(err.data.message)
     })
+
   }
 
   mounted() {

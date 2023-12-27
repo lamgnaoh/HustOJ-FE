@@ -26,17 +26,21 @@
             </Row>
           </div>
           <Row style="text-align: center;">
-            <Col span="8" style="border-right:1px solid #dfdfdf">
+            <Col span="6" style="border-right:1px solid #dfdfdf">
               <p>Solved</p>
               <p>{{ user.acCount }}</p>
             </Col>
-            <Col span="8" style="border-right:1px solid #dfdfdf">
+            <Col span="6" style="border-right:1px solid #dfdfdf">
               <p>Submission</p>
               <p>{{ user.submitCount }}</p>
             </Col>
-            <Col span="8">
+            <Col span="6" style="border-right:1px solid #dfdfdf">
               <p>Rate</p>
               <p>{{ (user.acRate * 100).toFixed(1) }} %</p>
+            </Col>
+            <Col span="6">
+              <p>Score</p>
+              <p>{{ user.totalScore }}</p>
             </Col>
           </Row>
         </Card>
