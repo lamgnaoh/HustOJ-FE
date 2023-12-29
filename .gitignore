@@ -10,6 +10,7 @@ package-lock.json
 # ignore frontend env
 # .env.dev For when the front and back ends run on the same machine
 .env.dev
+.env
 
 # Log files
 npm-debug.log*

@@ -1,9 +1,0 @@
-{
-  "extends": ["tslint-plugin-prettier", "tslint-config-prettier"],
-  "globals": {
-    "require": true
-  },
-  "rules": {
-    "prettier": false
-  }
-}
