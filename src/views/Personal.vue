@@ -77,7 +77,10 @@ export default class Personal extends Vue {
         ;(this as any).$Message.error(err.data.message)
       })
     } else {
-      this.user = this.userInfo
+      this.user = api.user
+      .getMyInfo().then((res: any) => {
+        this.user = res.data
+      })
     }
   }
 

@@ -19,10 +19,10 @@
           <Icon type="ios-trophy" />
           Contest
         </MenuItem>
-        <MenuItem name="rank" to="/rank">
-          <Icon type="ios-podium" />
-          Ranking
-        </MenuItem>
+<!--        <MenuItem name="rank" to="/rank">-->
+<!--          <Icon type="ios-podium" />-->
+<!--          Ranking-->
+<!--        </MenuItem>-->
         <Submenu name="3">
           <template slot="title">
             <Icon type="md-information-circle"></Icon>

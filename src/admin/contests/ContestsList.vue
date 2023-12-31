@@ -118,7 +118,7 @@ import Panel from "@/components/Panel.vue";
 })
 export default class Index extends Vue {
   total: number = 0
-  pageSize: number = 20
+  pageSize: number = 10
   page: number = 0
   contests: any = []
   rank: any = ''
@@ -152,6 +152,7 @@ export default class Index extends Vue {
   }
 
   pageChange(pages: number) {
+    console.log(pages)
     this.page = pages - 1
     this.getContests(pages - 1, this.pageSize)
   }
