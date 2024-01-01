@@ -7,4 +7,4 @@
 
 
 # Compile and Running
-1. `VUE_APP_BASE_URL=https://xxxxxx npm run build`
+1. `VITE_APP_BASE_URL=https://xxxxxx npm run build`
