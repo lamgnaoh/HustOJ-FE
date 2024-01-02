@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { createVuePlugin } from "vite-plugin-vue2";
+import vue from '@vitejs/plugin-vue2'
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -7,7 +7,7 @@ const filename = fileURLToPath(import.meta.url);
 const pathSegments = path.dirname(filename);
 
 export default defineConfig({
-    plugins: [createVuePlugin()],
+    plugins: [vue()],
     build: {
         rollupOptions: {
             output: {
