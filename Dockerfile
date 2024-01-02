@@ -1,8 +1,8 @@
-FROM node:9.11.1-alpine AS builder
+FROM node:16.20.2 AS builder
 
 WORKDIR /HustOJ-FE
 COPY package*.json /HustOJ-FE/
-RUN apk update && apk upgrade && apk add --no-cache git
+RUN rm -rf ./node_modules
 RUN npm install
 
 COPY . /HustOJ-FE/
