@@ -11,8 +11,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                format: 'es',
-                treeshake: false
+                format: 'es'
             },
             preserveEntrySignatures: 'allow-extension',
         }
@@ -20,8 +19,16 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(pathSegments, './src'),
-            '~': path.resolve(pathSegments, './node_modules')
+            // '~': path.resolve(pathSegments, './node_modules')
         },
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
-    }
+    },
+    css: {
+        preprocessorOptions: {
+            less: {
+                javascriptEnabled: true,
+                additionalData: '@root-entry-name: default;',
+            },
+        },
+    },
 })

@@ -54,7 +54,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="less">
-@import './style/base';
+@import '@/style/base';
 
 * {
   box-sizing: border-box;
