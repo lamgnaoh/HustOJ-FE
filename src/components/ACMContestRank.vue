@@ -152,6 +152,8 @@ export default class ACMContestRank extends Vue {
       }],
     series: []
   }
+
+  interval : any = null
   exportRank() {
     const params = this.$route.params
     const id: string = params.id
@@ -183,7 +185,12 @@ export default class ACMContestRank extends Vue {
   refreshAuto(status: any) {
     if (status === true) {
       ;(this as any).$Message.success('Auto refresh')
+      this.interval = setInterval(() => {
+        this.page = 1
+        this.getContestRankData(1, this.pageSize)
+      }, 10000);
     } else {
+      clearInterval(this.interval)
       ;(this as any).$Message.success('Auto refresh off')
     }
   }
