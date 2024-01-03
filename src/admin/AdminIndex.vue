@@ -83,7 +83,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Admin extends Vue {
+export default class AdminIndex extends Vue {
 
   get isSuperAdmin() {
     return this.$store.getters.isSuperAdmin;

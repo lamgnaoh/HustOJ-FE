@@ -57,7 +57,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import api from '@/api/api'
 
 @Component
-export default class UserManager extends Vue {
+export default class JudgeServer extends Vue {
   loading: boolean = true
   status: any = {}
   getJudgeServer() {

@@ -246,7 +246,7 @@ import Panel from "@/components/Panel.vue";
     Panel
   },
 })
-export default class Problemform extends Vue {
+export default class ProblemForm extends Vue {
   problemData: any = {
     authorId: '',
     problemCode: '',

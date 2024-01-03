@@ -83,7 +83,7 @@ import AddUserComponent from "@/admin/users/AddUserComponent.vue";
     Panel
   }
 })
-export default class Index extends Vue {
+export default class ContestMember extends Vue {
   total: number = 0
   page: number = 0
   pageSize: number = 10

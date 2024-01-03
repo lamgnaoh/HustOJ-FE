@@ -82,7 +82,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import api from '../api/api'
 
 @Component
-export default class Index extends Vue {
+export default class Rank extends Vue {
   acCount: any = 0
   submitCount: any = 0
   ranks: any = []

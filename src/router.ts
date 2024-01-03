@@ -13,15 +13,27 @@ import rank from '@/views/Rank.vue'
 import personal from '@/views/Personal.vue'
 import submission from '@/views/Submission.vue'
 import share from '@/views/Share.vue'
-import setting from '@/views/setting/Setting.vue'
 
 import problemDetail from '@/components/ProblemDetail.vue'
 import contestDetail from '@/components/ContestDetail.vue'
 import announcement from '@/components/Announcement.vue'
 import contestProblemDetail from '@/components/ContestProblemDetail.vue'
 
-import adminIndex from '@/admin/adminIndex.vue'
+import adminIndex from '@/admin/AdminIndex.vue'
 import accountSetting from "@/views/AccountSetting.vue";
+import admin from "@/admin/index/index.vue";
+import problemList from "@/admin/problems/ProblemList.vue";
+import createContest from "@/admin/contests/CreateContest.vue";
+import contestsList from "@/admin/contests/ContestsList.vue";
+import contestProblemList from "@/admin/contests/ContestProblems.vue";
+import contestMember from "@/admin/contests/ContestMember.vue";
+import groupList from "@/admin/groups/GroupList.vue";
+import createGroup from "@/admin/groups/CreateGroup.vue";
+import logs from "@/admin/users/Logs.vue";
+import judgeServer from "@/admin/index/JudgeServer.vue";
+import userManager from "@/admin/users/UserManager.vue";
+import createProblem from "@/admin/problems/CreateProblem.vue";
+import adminAnnouncement from "@/admin/announcement/Announcement.vue";
 
 Vue.use(Router)
 const routerPush = Router.prototype.push
@@ -125,7 +137,7 @@ const router = new Router({
     },
     {
       path: '/admin',
-      name: 'adminIndex',
+      name: 'AdminIndex.vue',
       component: adminIndex,
       redirect: '/admin/index',
       meta: {
@@ -135,138 +147,87 @@ const router = new Router({
         {
           path: 'judge-server',
           name: 'judge-server',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/index/JudgeServer.vue'
-                  ),
+          component: judgeServer
         },
         {
           path: 'index',
           name: 'admin-index',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/index/index.vue'
-                  ),
+          component: admin
         },
         {
           path: 'admin-announcement',
           name: 'admin-announcement',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/announcement/Announcement.vue'
-                  ),
+          component: adminAnnouncement
         },
         {
           path: 'problems-list',
           name: 'problems-list',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/problems/ProblemList.vue'
-                  ),
+          component: problemList
         },
         {
           path: 'create-problem',
           name: 'create-problem',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/problems/CreateProblem.vue'
-                  ),
+          component: createProblem
         },
         {
           path: 'edit-problem/:problemId',
           name: 'edit-problem',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/problems/CreateProblem.vue'
-                  ),
+          component: createProblem
         },
         {
           path: 'create-contest',
           name: 'create-contest',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/contests/CreateContest.vue'
-                  ),
+          component: createContest
         },
         {
           path: '/contest/:contestId/edit',
           name: 'edit-contest',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/contests/CreateContest.vue'
-                  ),
+          component: createContest
         },
         {
           path: 'contests-list',
           name: 'contests-list',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/contests/ContestsList.vue'
-                  ),
+          component: contestsList
         },
         {
           path: 'contest-problems/:contestId',
           name: 'contest-problems',
-          component: () =>
-            import(
-              /* webpackChunkName: 'async-admin' */ '@/admin/contests/ContestProblems.vue'
-            ),
+          component: contestProblemList
         },
         {
           path: 'contest-problems/:contestId/problem/create',
           name: 'create-contest-problem',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/problems/CreateProblem.vue'
-                  ),
+          component: createProblem
         },
         {
           path: 'contest-problems/:contestId/problem/:problemId',
           name: 'edit-contest-problem',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/problems/CreateProblem.vue'
-                  ),
+          component: createProblem
         },
         {
           path: 'contest-member/:id',
           name: 'contest-member',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/contests/ContestMember.vue'
-                  ),
+          component: contestMember
         },
         {
           path: 'group-list',
           name: 'group-list',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/groups/GroupList.vue'
-                  ),
+          component: groupList
         },
         {
           path: 'create-group',
           name: 'create-group',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/groups/CreateGroup.vue'
-                  ),
+          component: createGroup
         },
         {
           path: 'user-manager',
           name: 'user-manager',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/users/UserManager.vue'
-                  ),
+          component: userManager
         },
         {
           path: 'logs',
           name: 'logs',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/users/Logs.vue'
-                  ),
+          component: logs
         },
       ],
     },

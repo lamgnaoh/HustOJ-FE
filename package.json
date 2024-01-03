@@ -22,8 +22,7 @@
     "tar-simditor-markdown": "^1.2.3",
     "url-loader": "^2.2.0",
     "view-design": "^4.0.2",
-    "vite": "^4.5.0",
-    "vue": "^2.5.17",
+    "vue": "^2.7.0",
     "vue-class-component": "^6.0.0",
     "vue-codemirror": "^4.0.5",
     "vue-echarts": "^2.6.0",
@@ -39,7 +38,7 @@
     "compression-webpack-plugin": "^2.0.0",
     "postcss": "^8.4.32",
     "typescript": "^3.0.0",
-    "vue-template-compiler": "^2.5.17",
+    "vue-template-compiler": "^2.7.0",
     "webpack-bundle-analyzer": "^3.1.0"
   },
   "postcss": {

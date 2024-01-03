@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue2'
+import { defineConfig } from 'vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -12,13 +12,13 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 format: 'es'
-            },
-            preserveEntrySignatures: 'allow-extension',
+            }
         }
     },
     resolve: {
         alias: {
             '@': path.resolve(pathSegments, './src'),
+            '@font': path.resolve(pathSegments, './fonts'),
             // '~': path.resolve(pathSegments, './node_modules')
         },
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
@@ -26,8 +26,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             less: {
-                javascriptEnabled: true,
-                additionalData: '@root-entry-name: default;',
+                javascriptEnabled: true
             },
         },
     },

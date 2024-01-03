@@ -42,7 +42,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import api from '../../api/api'
 
 @Component
-export default class UserManager extends Vue {
+export default class Logs extends Vue {
   columns: any = [
     {
       title: 'Name',

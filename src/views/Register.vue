@@ -65,7 +65,7 @@ import api from '../api/api'
 import md5 from 'js-md5'
 
 @Component
-export default class About extends Vue {
+export default class Register extends Vue {
   register: any = {
     username: '',
     mail: '',

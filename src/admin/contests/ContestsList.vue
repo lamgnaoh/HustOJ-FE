@@ -116,7 +116,7 @@ import Panel from "@/components/Panel.vue";
     Panel
   },
 })
-export default class Index extends Vue {
+export default class ContestsList extends Vue {
   total: number = 0
   pageSize: number = 20
   page: number = 0

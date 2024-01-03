@@ -17,7 +17,7 @@ import api from '@/api/api'
     ProblemForm,
   },
 })
-export default class Createproblem extends Vue {
+export default class CreateProblem extends Vue {
   problemDetail: any = {}
 
   getData(data: any) {

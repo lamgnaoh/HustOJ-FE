@@ -96,7 +96,7 @@ import Panel from "@/components/Panel.vue";
     Simditor,Panel
   }
 })
-export default class Admin extends Vue {
+export default class CreateContest extends Vue {
   // text editor configuration
   title='Create contest'
   // contest parameter

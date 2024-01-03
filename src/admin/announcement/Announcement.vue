@@ -91,7 +91,7 @@ import Simditor from "@/components/Simditor.vue";
     Panel
   },
 })
-export default class Announcement extends Vue {
+export default class AdminAnnouncement extends Vue {
   announcements: Array<any> = []
   title: any = ''
   content: any = 'ggg'
