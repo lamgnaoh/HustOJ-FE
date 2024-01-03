@@ -1,5 +1,7 @@
 // @ts-ignore
-const { VUE_APP_BASE_URL } = 'http://localhost:8081'
+import * as process from "process";
+
+const VUE_APP_BASE_URL = process.env.VUE_APP_BASE_URL ? process.env.VUE_APP_BASE_URL : 'http://localhost:8081'
 export { VUE_APP_BASE_URL }
 
 export const JUDGE_STATUS =  {

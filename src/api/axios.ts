@@ -1,7 +1,8 @@
 import axios from 'axios'
 import router from '@/router'
+import { VUE_APP_BASE_URL } from '@/api/constant.ts'
 
-axios.defaults.baseURL = 'http://localhost:8081'
+axios.defaults.baseURL = VUE_APP_BASE_URL
 axios.interceptors.request.use(
     function(config) {
       // @ts-ignore

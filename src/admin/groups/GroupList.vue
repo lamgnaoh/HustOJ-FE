@@ -200,7 +200,7 @@ export default class GroupList extends Vue {
   debounceFunc: () => void
   modal: boolean = false
   quantity: string = ''
-  baseURL: any = 'http://localhost:8081'
+  baseURL: any = VUE_APP_BASE_URL
   createModal: boolean = false
   groupName: string = ''
 
