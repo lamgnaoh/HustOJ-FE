@@ -18,14 +18,14 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(pathSegments, './src'),
-            '@font': path.resolve(pathSegments, './fonts'),
-            // '~': path.resolve(pathSegments, './node_modules')
         },
         extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     },
     css: {
         preprocessorOptions: {
             less: {
+                math: "always",
+                relativeUrls: true,
                 javascriptEnabled: true
             },
         },
