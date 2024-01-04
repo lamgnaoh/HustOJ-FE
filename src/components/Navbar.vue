@@ -48,7 +48,7 @@
             >
             <DropdownItem v-else name="personal">My Home page</DropdownItem>
             <DropdownItem name="submission">My Submission</DropdownItem>
-            <DropdownItem name="setting">Setting</DropdownItem>
+            <DropdownItem name="setting">Change password</DropdownItem>
             <DropdownItem name="logout" divided>Log out</DropdownItem>
           </DropdownMenu>
         </Dropdown>
