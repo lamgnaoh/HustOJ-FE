@@ -116,14 +116,17 @@ body {
   padding-top: 20px;
 }
 
+.app-content {
+  margin-bottom: 70px;
+}
+
 .oj-footer {
   font-size: 17px;
   text-align: center;
   background-color: #f8f8f9 !important;
   padding: 15px 50px;
-}
-
-.app-content {
-  height: calc(100vh - 75px);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>
