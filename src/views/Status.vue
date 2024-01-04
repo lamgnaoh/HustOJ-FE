@@ -27,19 +27,18 @@
           </li>
         </ul>
       </Col>
-      <div style="padding: 0 50px;">
-        <Table :columns="title" :data="status" :width="1400"></Table>
-      </div>
-      <div style="padding-top: 30px;">
-        <Page
-            :total="total"
-            show-sizer
-            @on-change="pageChange"
-            @on-page-size-change="pageSizeChange"
-        />
-      </div>
     </Row>
-
+    <div style="padding: 0 50px;">
+      <Table :columns="title" :data="status"></Table>
+    </div>
+    <div style="padding-top: 30px;">
+      <Page
+              :total="total"
+              show-sizer
+              @on-change="pageChange"
+              @on-page-size-change="pageSizeChange"
+      />
+    </div>
   </div>
 </template>
 
