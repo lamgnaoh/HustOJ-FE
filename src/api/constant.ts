@@ -1,6 +1,6 @@
 // @ts-ignore
-const { VUE_APP_BASE_URL } = 'http://localhost:8081'
-export { VUE_APP_BASE_URL }
+const { VITE_APP_BASE_URL } = 'http://localhost:8081'
+export { VITE_APP_BASE_URL }
 
 export const JUDGE_STATUS =  {
 //   WRONG_ANSWER -1 (judger module will never return this value, it's used for awswer checker)

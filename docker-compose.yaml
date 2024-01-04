@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        - VUE_APP_BASE_URL=${VUE_APP_BASE_URL}
+        - VITE_APP_BASE_URL=${VITE_APP_BASE_URL}
         - EXPOSE_PORT=${EXPOSE_PORT}
     env_file: ./.env
     ports:

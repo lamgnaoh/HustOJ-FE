@@ -175,7 +175,6 @@ import { Component, Vue } from 'vue-property-decorator'
 import api from '@/api/api.ts'
 import GroupForm from '@/components/CreateGroup.vue'
 import { debounce } from '@/util/util.ts'
-import { VUE_APP_BASE_URL } from '@/api/constant'
 import axios from 'axios'
 
 @Component({
