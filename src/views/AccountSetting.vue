@@ -2,14 +2,14 @@
   <div class="setting-main">
     <h1 class="section-title">Change password</h1>
     <el-form ref="formPassword" :model="formPassword" :rules="rulePassword" class="setting-content">
-      <el-form-item label="Old Password" prop="old_password">
-        <el-input v-model="formPassword.old_password" type="password"/>
+      <el-form-item label="Old Password" prop="oldPassword">
+        <el-input v-model="formPassword.oldPassword" type="password"/>
       </el-form-item>
-      <el-form-item label="New Password" prop="new_password">
-        <el-input v-model="formPassword.new_password" type="password"/>
+      <el-form-item label="New Password" prop="newPassword">
+        <el-input v-model="formPassword.newPassword" type="password"/>
       </el-form-item>
-      <el-form-item label="Confirm New Password" prop="again_password">
-        <el-input v-model="formPassword.again_password" type="password"/>
+      <el-form-item label="Confirm New Password" prop="againPassword">
+        <el-input v-model="formPassword.againPassword" type="password"/>
       </el-form-item>
       <el-form-item v-if="visible.passwordAlert">
         <Alert type="success">You will need to login again after 5 seconds..</Alert>
@@ -27,32 +27,32 @@ import api from "@/api/api";
 export default class AccountSetting extends Vue {
 
   oldPasswordCheck : any = (rule: any, value: any, callback: any) => {
-    if (this.formPassword.old_password !== '') {
-      if (this.formPassword.old_password === this.formPassword.new_password) {
+    if (this.formPassword.oldPassword !== '') {
+      if (this.formPassword.oldPassword === this.formPassword.newPassword) {
         callback(new Error('The new password doesn\'t change'))
       } else {
         // @ts-ignore
-        this.$refs.formPassword.validateField('again_password')
+        this.$refs.formPassword.validateField('againPassword')
       }
     }
     callback()
   }
 
   CheckNewPassword: any = (rule: any, value: any, callback: any) => {
-    if (this.formPassword.old_password !== '') {
-      if (this.formPassword.old_password === this.formPassword.new_password) {
+    if (this.formPassword.oldPassword !== '') {
+      if (this.formPassword.oldPassword === this.formPassword.newPassword) {
         callback(new Error('The new password doesn\'t change'))
       } else {
         // 对第二个密码框再次验证
         // @ts-ignore
-        this.$refs.formPassword.validateField('again_password')
+        this.$refs.formPassword.validateField('againPassword')
       }
     }
     callback()
   }
 
   CheckAgainPassword: any = (rule: any, value: any, callback: any) => {
-    if (value !== this.formPassword.new_password) {
+    if (value !== this.formPassword.newPassword) {
       callback(new Error('password does not match'))
     }
     callback()
@@ -69,9 +69,9 @@ export default class AccountSetting extends Vue {
     tfaRequired: false
   }
   formPassword: any = {
-    old_password: '',
-    new_password: '',
-    again_password: ''
+    oldPassword: '',
+    newPassword: '',
+    againPassword: ''
   }
 
   formEmail: any = {
@@ -80,12 +80,15 @@ export default class AccountSetting extends Vue {
     new_email: ''
   }
   rulePassword: any = {
-    old_password: this.oldPasswordCheck,
-    new_password: [
+    oldPassword: [
+      {required: true, trigger: 'blur', min: 6, max: 20},
+      {validator: this.oldPasswordCheck, trigger: 'blur'}
+    ],
+    newPassword: [
       {required: true, trigger: 'blur', min: 6, max: 20},
       {validator: this.CheckNewPassword, trigger: 'blur'}
     ],
-    again_password: [
+    againPassword: [
       {required: true, validator: this.CheckAgainPassword, trigger: 'change'}
     ]
   }
@@ -101,7 +104,7 @@ export default class AccountSetting extends Vue {
     this.validateForm('formPassword').then(valid => {
       this.loading.btnPassword = true
       let data = {...this.formPassword}
-      delete data.again_password
+      delete data.againPassword
       api.changePassword(data).then((res: any )=> {
         this.loading.btnPassword = false
         this.visible.passwordAlert = true
