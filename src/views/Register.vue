@@ -1,62 +1,56 @@
 <template>
-  <Row>
-    <Col span="6" offset="9">
-      <div class="register">
-        <h1>User registration</h1>
-        <Form
-            ref="registerForm"
-            :model="register"
-            :rules="registerRule"
-            :label-width="80"
-        >
-          <FormItem label="Username" prop="username">
-            <Input
-                v-model="register.username"
-                placeholder="Please enter username"
-            ></Input>
-          </FormItem>
-          <FormItem label="Email" prop="mail">
-            <Input
-                type="email"
-                v-model="register.mail"
-                placeholder="Please enter your email"
-            ></Input>
-          </FormItem>
-          <FormItem label="Password" prop="password">
-            <Input
-                type="password"
-                v-model="register.password"
-                placeholder="Please enter your password"
-            ></Input>
-          </FormItem>
-          <FormItem label="Enter password again" prop="passwdCheck">
-            <Input
-                type="password"
-                v-model="register.passwdCheck"
-                placeholder="Please enter password again"
-            ></Input>
-          </FormItem>
-          <FormItem label="Lastname" prop="lastname">
-            <Input v-model="register.lastname" placeholder="Please enter lastname"></Input>
-          </FormItem>
-          <FormItem label="Firstname" prop="firstname">
-            <Input
-                v-model="register.firstname"
-                placeholder="Please enter firstname"
-            ></Input>
-          </FormItem>
-          <FormItem>
-            <div class="footer-between">
-              <Button type="primary" @click="handleSubmit('registerForm')"
-              >Register</Button
-              >
-              <Button @click="handleReset()">Reset</Button>
-            </div>
-          </FormItem>
-        </Form>
-      </div>
-    </Col>
-  </Row>
+  <div class="register">
+    <h1>User registration</h1>
+    <el-form
+        ref="registerForm"
+        :model="register"
+        :rules="registerRule"
+        label-width="160px"
+    >
+      <el-form-item label="Username" prop="username">
+        <el-input
+            v-model="register.username"
+            placeholder="Please enter username"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Email" prop="mail">
+        <el-input
+            type="email"
+            v-model="register.mail"
+            placeholder="Please enter your email"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Password" prop="password">
+        <el-input
+            type="password"
+            v-model="register.password"
+            placeholder="Please enter your password"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Enter password again" prop="passwdCheck">
+        <el-input
+            type="password"
+            v-model="register.passwdCheck"
+            placeholder="Please enter password again"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="Lastname" prop="lastname">
+        <el-input v-model="register.lastname" placeholder="Please enter lastname"></el-input>
+      </el-form-item>
+      <el-form-item label="Firstname" prop="firstname">
+        <el-input
+            v-model="register.firstname"
+            placeholder="Please enter firstname"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <div class="footer-between">
+          <el-button @click="handleReset()">Reset</el-button>
+          <el-button type="primary" @click="handleSubmit('registerForm')">Register</el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -151,24 +145,16 @@ export default class About extends Vue {
 
 <style lang="less" scoped>
 .register {
-  margin-top: 50px;
-  margin-bottom: 100px;
-}
-
-.input-form {
-  padding-top: 20px;
-  padding-bottom: 5px;
-  text-align: left;
+  margin: 100px auto;
+  width: 800px;
 }
 
 h1 {
-  font-weight: 400;
+  font-weight: 700;
   margin-bottom: 30px;
 }
 
 .footer-between {
-  display: flex;
-  justify-content: space-around;
-  margin-left: -50px;
+  float: left;
 }
 </style>

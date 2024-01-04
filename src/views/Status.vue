@@ -27,17 +27,17 @@
           </li>
         </ul>
       </Col>
-      <Col span="20" offset="2">
+      <div style="padding: 0 50px;">
         <Table :columns="title" :data="status"></Table>
-      </Col>
-      <Col style="padding-top: 30px;">
+      </div>
+      <div style="padding-top: 30px;">
         <Page
             :total="total"
             show-sizer
             @on-change="pageChange"
             @on-page-size-change="pageSizeChange"
         />
-      </Col>
+      </div>
     </Row>
 
   </div>

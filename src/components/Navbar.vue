@@ -1,6 +1,8 @@
 <template>
-  <Menu mode="horizontal" :active-name="activeName">
-    <MenuItem name="home" class="oj-logo" to="/">HUST Online Judge</MenuItem>
+  <Menu mode="horizontal" :active-name="activeName" class="header">
+    <MenuItem name="home" class="oj-logo" to="/">
+      <img src="src/assets/logo.png" alt="" class="logo"/> <span>HUST Online Judge</span>
+    </MenuItem>
     <div class="layout-nav">
       <div class="nav-left">
         <MenuItem name="home" to="/">
@@ -147,6 +149,22 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="less" scoped>
+.logo {
+  width: 23px;
+  position: relative;
+  top: 9px;
+  margin-right: 5px;
+}
+
+.header {
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 7px 29px #63636e33;
+}
+
 .ivu-layout {
   background-color: white !important;
 }
