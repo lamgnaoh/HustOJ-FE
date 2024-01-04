@@ -1,41 +1,43 @@
 <template>
-  <Row :gutter="16">
-    <Col span="16" offset="1" class="card-margin">
-      <Row>
-        <Col span="24" offset="8">
-          <ul class="filter">
-            <li>
-              <Dropdown @on-click="filterByDifficulty" >
+  <div class="problem-content">
+    <Row :gutter="16">
+      <Col :span="8" :offset="16">
+        <ul class="filter">
+          <li>
+            <Dropdown @on-click="filterByDifficulty">
               <span>{{difficulty === '' ? 'Difficulty' : this.difficulty}}
                 <Icon type="md-arrow-dropdown" />
               </span>
-                <Dropdown-menu slot="list">
-                  <Dropdown-item name="">All</Dropdown-item>
-                  <Dropdown-item name="Low">Low</Dropdown-item>
-                  <Dropdown-item name="Medium" >Medium</Dropdown-item>
-                  <Dropdown-item name="High">High</Dropdown-item>
-                </Dropdown-menu>
-              </Dropdown>
-            </li>
-            <li>
-              <Input
-                  search
-                  v-model="keyword"
-                  @on-enter="search(keyword)"
-                  @click.native="search(keyword)"
-                  placeholder="keyword"
-                  icon="md-search"
-              />
-            </li>
-            <li>
-              <Button type="info" @click="onReset" >
-                <Icon type="md-refresh" />
-                Reset
-              </Button>
-            </li>
-          </ul>
-        </Col>
-        <Col span="24" class="card-margin">
+              <Dropdown-menu slot="list">
+                <Dropdown-item name="">All</Dropdown-item>
+                <Dropdown-item name="Low">Low</Dropdown-item>
+                <Dropdown-item name="Medium">Medium</Dropdown-item>
+                <Dropdown-item name="High">High</Dropdown-item>
+              </Dropdown-menu>
+            </Dropdown>
+          </li>
+          <li>
+            <Input
+                v-model="keyword"
+                icon="md-search"
+                placeholder="Keyword"
+                search
+                @on-enter="search(keyword)"
+                @click.native="search(keyword)"
+            />
+          </li>
+          <li>
+            <Button type="info" @click="onReset">
+              <Icon type="md-refresh"/>
+              Reset
+            </Button>
+          </li>
+        </ul>
+      </Col>
+    </Row>
+    <Row :gutter="16">
+      <Col class="card-margin" span="18">
+        <div class="card-margin" span="24">
           <ul style="font-weight: 700" class="pro-table">
             <li style="margin-right: 30px"></li>
             <li class="code">Problem Code</li>
@@ -50,7 +52,7 @@
               :class="[index % 2 === 0 ? 'bg' : '']"
           >
             <li style="margin-right: 30px;text-align: center">
-              <Icon type="md-checkmark" color="green" size="20" v-if="problem.myStatus == 'ACCEPTED'" ></Icon>
+              <Icon v-if="problem.myStatus == 'ACCEPTED'" color="green" size="20" type="md-checkmark"></Icon>
             </li>
             <li class="code" @click="problemDetail(problem)">
               {{ problem.code }}
@@ -66,31 +68,31 @@
             </li>
             <li>{{ problem.rate }}</li>
           </ul>
-        </Col>
-        <Col span="24" class="card-margin">
+        </div>
+        <div class="table-pagination">
           <Page
               :total="total"
               show-sizer
               @on-change="pageChange"
               @on-page-size-change="pageSizeChange"
           />
-        </Col>
-      </Row>
-    </Col>
-    <Col span="6" class="card-margin">
-      <Card dis-hover align="left" style="margin-top: 20px">
-        <p slot="title">Tags</p>
-        <Button
-            shape="circle"
-            v-for="(tag, index) in tags"
-            :key="index"
-            @click="addTag(tag.id)"
-        >
-          {{ tag.name }}
-        </Button>
-      </Card>
-    </Col>
-  </Row>
+        </div>
+      </Col>
+      <Col class="card-margin" span="6">
+        <Card align="left" dis-hover style="margin-top: 20px">
+          <p slot="title">Tags</p>
+          <Button
+              v-for="(tag, index) in tags"
+              :key="index"
+              shape="circle"
+              @click="addTag(tag.id)"
+          >
+            {{ tag.name }}
+          </Button>
+        </Card>
+      </Col>
+    </Row>
+  </div>
 </template>
 
 <script lang="ts">
@@ -299,6 +301,14 @@ export default class Problems extends Vue {
   background-color: #ca5c55;
   padding: 6px 10px;
   border-radius: 10px;
+}
+
+.problem-content {
+  padding: 50px;
+}
+
+.table-pagination {
+  margin: 30px auto;
 }
 
 .card-margin {

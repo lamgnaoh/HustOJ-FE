@@ -2,14 +2,11 @@
   <div id="app">
     <div class="app-content">
       <Navbar v-if="isAdmin"></Navbar>
-      <router-view />
+      <router-view class="content"/>
     </div>
     <footer class="footer" v-if="isAdmin">
       <div class="oj-footer">
-        Copyright © 2023 ~ 2024 Hanoi University of Science and Technology
-      </div>
-      <div class="oj-footer">
-        Powered by <a href="https://github.com/shuoj">HustOJ</a>
+        Copyright © 2023 ~ 2024 Hanoi University of Science and Technology. Powered by <b>HustOJ</b>
       </div>
     </footer>
   </div>
@@ -120,13 +117,13 @@ body {
 }
 
 .oj-footer {
+  font-size: 17px;
   text-align: center;
-  background-color: white !important;
-  padding: 0 50px 10px 50px;
+  background-color: #f8f8f9 !important;
+  padding: 15px 50px;
 }
 
 .app-content {
-  height: 100vh;
-  flex: 1;
+  height: calc(100vh - 75px);
 }
 </style>
