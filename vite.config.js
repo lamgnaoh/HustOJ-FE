@@ -26,8 +26,9 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             less: {
-                javascriptEnabled: true,
-                additionalData: '@root-entry-name: default;',
+                math: "always",
+                relativeUrls: true,
+                javascriptEnabled: true
             },
         },
     },
