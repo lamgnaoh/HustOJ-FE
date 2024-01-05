@@ -119,26 +119,37 @@
             <Table :columns="title" :data="submission" border></Table>
           </TabPane>
           <TabPane label="Comment" name="comment">
-            <div v-for="parentComment in comment">
-              <comment :author="parentComment.authorName" :content="parentComment.content"
-                       :create-date="parentComment.createDate"
-                       :isShowSubComment="parentComment.id == activeId"
-                       @reply="reply(parentComment.id)"
-                       @showSubComment="showMore(parentComment.id)"></comment>
-              <div v-show="parentComment.id == activeId" class="sub-comment">
-                <comment v-for="subComment in parentComment.listSubComment"
-                         :author="subComment.authorName"
-                         :content="subComment.content"
-                         :create-date="subComment.createDate"
-                         :sub-comment="true"
-                         @reply="reply(subComment.parentCommentId)"></comment>
-                <new-comment v-show="parentComment.id == activeId"
-                             @saveComment="saveComment"></new-comment>
+            <div v-if="logined">
+              <div v-for="parentComment in comment">
+                <comment :author="parentComment.authorName" :content="parentComment.content"
+                         :create-date="parentComment.createDate"
+                         :isShowSubComment="parentComment.id == activeId"
+                         @reply="reply(parentComment.id)"
+                         @showSubComment="showMore(parentComment.id)"></comment>
+                <div v-show="parentComment.id == activeId" class="sub-comment">
+                  <comment v-for="subComment in parentComment.listSubComment"
+                           :author="subComment.authorName"
+                           :content="subComment.content"
+                           :create-date="subComment.createDate"
+                           :sub-comment="true"
+                           @reply="reply(subComment.parentCommentId)"></comment>
+                  <new-comment v-show="parentComment.id == activeId"
+                               @saveComment="saveComment"></new-comment>
+                </div>
+              </div>
+              <div v-show="comment.length == 0 || activeId == -1">
+                <div v-if="comment.length == 0" style="text-align: left">There are no comment at the moment</div>
+                <new-comment @saveComment="saveComment"></new-comment>
               </div>
             </div>
-            <div v-show="comment.length == 0 || activeId == -1">
-              <div v-if="comment.length == 0" style="text-align: left">There are no comment at the moment</div>
-              <new-comment @saveComment="saveComment"></new-comment>
+            <div v-else>
+              You must login to comment!!!
+            </div>
+          </TabPane>
+          <TabPane label="Report Issue" name="issue">
+            <report-issue v-if="logined" :problem-id="this.$route.params.id"></report-issue>
+            <div v-else>
+              You must login to report issue!!!
             </div>
           </TabPane>
         </Tabs>
@@ -153,12 +164,14 @@ import api from '@/api/api'
 import CodeMirror from '@/components/CodeMirror.vue'
 import Comment from "@/components/Comment.vue";
 import NewComment from "@/components/NewComment.vue";
+import ReportIssue from "@/components/ReportIssue.vue";
 
 @Component({
   components: {
     NewComment,
     Comment,
     CodeMirror,
+    ReportIssue,
   },
 })
 export default class ProblemDetail extends Vue {

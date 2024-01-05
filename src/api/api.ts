@@ -191,5 +191,9 @@ export default {
       axios.post(`/api/v1/comment/save`, data),
 
   changePassword: (data: {}) => axios.post('/api/v1/me/changePassword', data),
-  changeEmail : (data: {}) => axios.post('/api/v1/me/changeEmail', data)
+  changeEmail: (data: {}) => axios.post('/api/v1/me/changeEmail', data),
+  //   issue api
+  saveIssue: (data: {}) => axios.post('/api/v1/issue/save', data),
+  pageIssue: (params: {}) => axios.get('/api/v1/issue/page', {params}),
+  detailIssue: (data: { id: number }) => axios.get(`/api/v1/issue/detail/${data.id}`),
 }
