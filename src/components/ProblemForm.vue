@@ -237,6 +237,7 @@ import api from '@/api/api'
 import Simditor from "./Simditor.vue";
 import Accordion from "@/components/Accordion.vue";
 import Panel from "@/components/Panel.vue";
+import { VUE_APP_BASE_URL } from '@/api/constant.ts'
 
 @Component({
   components: {
@@ -268,7 +269,7 @@ export default class Problemform extends Vue {
   }
   timeLimit: number = 1000
   ramLimit: number = 256
-  baseURL: any = 'http://localhost:8081'
+  baseURL: any = VUE_APP_BASE_URL
   sampleList: { input: string, output: string }[] = [{
     input: '',
     output: ''

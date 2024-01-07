@@ -16,7 +16,7 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "moment": "^2.22.1",
-    "tar-simditor": "^3.0.5",
+    "tar-simditor": "^2.3.18",
     "tar-simditor-markdown": "^1.2.3",
     "url-loader": "^2.2.0",
     "view-design": "^4.0.2",

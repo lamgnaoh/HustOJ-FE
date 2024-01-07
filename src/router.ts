@@ -22,6 +22,7 @@ import contestProblemDetail from '@/components/ContestProblemDetail.vue'
 
 import adminIndex from '@/admin/adminIndex.vue'
 import accountSetting from "@/views/AccountSetting.vue";
+import issuePage from '@/admin/issues/IssuePage.vue'
 
 Vue.use(Router)
 const routerPush = Router.prototype.push
@@ -139,6 +140,11 @@ const router = new Router({
               import(
                   /* webpackChunkName: 'async-admin' */ '@/admin/index/JudgeServer.vue'
                   ),
+        },
+        {
+          path: 'issues',
+          name: 'issues',
+          component: issuePage
         },
         {
           path: 'index',

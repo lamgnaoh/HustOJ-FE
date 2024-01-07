@@ -1,6 +1,8 @@
 <template>
-  <Menu mode="horizontal" :active-name="activeName">
-    <MenuItem name="home" class="oj-logo" to="/">HUST Online Judge</MenuItem>
+  <Menu mode="horizontal" :active-name="activeName" class="header">
+    <MenuItem name="home" class="oj-logo" to="/">
+      <img src="@/assets/logo.png" alt="" class="logo"/> <span>HUST Online Judge</span>
+    </MenuItem>
     <div class="layout-nav">
       <div class="nav-left">
         <MenuItem name="home" to="/">
@@ -19,10 +21,10 @@
           <Icon type="ios-trophy" />
           Contest
         </MenuItem>
-        <MenuItem name="rank" to="/rank">
-          <Icon type="ios-podium" />
-          Ranking
-        </MenuItem>
+<!--        <MenuItem name="rank" to="/rank">-->
+<!--          <Icon type="ios-podium" />-->
+<!--          Ranking-->
+<!--        </MenuItem>-->
         <Submenu name="3">
           <template slot="title">
             <Icon type="md-information-circle"></Icon>
@@ -46,7 +48,7 @@
             >
             <DropdownItem v-else name="personal">My Home page</DropdownItem>
             <DropdownItem name="submission">My Submission</DropdownItem>
-            <DropdownItem name="setting">Setting</DropdownItem>
+            <DropdownItem name="setting">Change password</DropdownItem>
             <DropdownItem name="logout" divided>Log out</DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -147,6 +149,22 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="less" scoped>
+.logo {
+  width: 23px;
+  position: relative;
+  top: 9px;
+  margin-right: 10px;
+}
+
+.header {
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 7px 29px #63636e33;
+}
+
 .ivu-layout {
   background-color: white !important;
 }

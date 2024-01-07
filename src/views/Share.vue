@@ -35,11 +35,11 @@
             </tr>
             <tr>
               <td>Memory:</td>
-              <td>{{ (errMsg.memory / (1024*1024)).toFixed(0) + ' mb' }} <span v-if="commit.result === 'ACCEPTED'"> , Beat <Tag color="success">{{commit.memoryPercentile.toFixed(2)}}</Tag>  %</span> </td>
+              <td>{{ (errMsg.memory / (1024*1024)).toFixed(0) + ' mb' }} <span v-if="commit.result === 'ACCEPTED' && commit.memoryPercentile != null "> , Beat <Tag color="success">{{commit.memoryPercentile.toFixed(2)}}</Tag>  %</span> </td>
             </tr>
             <tr>
               <td>Duration:</td>
-              <td>{{ errMsg.realTime }} ms<span v-if="commit.result === 'ACCEPTED'">, Beat <Tag color="primary" >{{commit.durationPercentile.toFixed(2)}}</Tag>  %</span> </td>
+              <td>{{ errMsg.realTime }} ms<span v-if="commit.result === 'ACCEPTED' && commit.durationPercentile != null ">, Beat <Tag color="primary" >{{commit.durationPercentile.toFixed(2)}}</Tag>  %</span> </td>
             </tr>
             <tr>
               <td>CPU Time Limit Exceeded:</td>

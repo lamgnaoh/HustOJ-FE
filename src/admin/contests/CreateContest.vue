@@ -1,15 +1,15 @@
 <template>
   <div class="view">
     <Panel :title="title">
-      <Form label-position="top">
+      <Form ref="contestForm" label-position="top" :rules="ruleValidate">
         <Row :gutter="20">
           <Col span="24">
-            <FormItem label="Contest Name" required>
+            <FormItem label="Contest Name" required prop="name">
               <Input v-model="name" style="width: 100%" />
             </FormItem>
           </Col>
           <Col span="24">
-            <FormItem label="Contest Description" required>
+            <FormItem label="Contest Description" required prop="description">
               <Simditor id="editor1" v-model="description"></Simditor>
             </FormItem>
           </Col>
@@ -96,7 +96,7 @@ import Panel from "@/components/Panel.vue";
     Simditor,Panel
   }
 })
-export default class Admin extends Vue {
+export default class CreateContest extends Vue {
   // text editor configuration
   title='Create contest'
   // contest parameter
@@ -110,6 +110,20 @@ export default class Admin extends Vue {
   endDate: any = ''
   password: any = ''
   disableRuleType: boolean = false
+  ruleValidate: any = {
+    name: [
+      { required: true, message: 'Please enter the contest name', trigger: 'blur' },
+    ],
+    description: [
+      { required: true, message: 'Please enter the contest description', trigger: 'blur' },
+    ] ,
+    startDate: [
+      { required: true, message: 'Please select the start time', trigger: 'blur' },
+    ],
+    endDate: [
+      { required: true, message: 'Please select the end time', trigger: 'blur' },
+    ],
+  }
 
   computeDate(date: string) {
     const start = new Date(date)
@@ -166,6 +180,28 @@ export default class Admin extends Vue {
   }
 
   saveContest() {
+    // @ts-ignore
+    // this.$refs.contestForm.validate((valid: any) => {
+    //   if (!valid) {
+    //    return this.$Message.error('Please fill in the required fields')
+    //   }
+    // });
+    if (this.startDate > this.endDate) {
+      return this.$Message.error('The start time cannot be greater than the end time')
+    }
+
+    if (this.startDate == '' || this.endDate == '') {
+      return this.$Message.error('Please select the start time and end time')
+    }
+    if (this.startDate < new Date()) {
+      return this.$Message.error('The start time cannot be less than the current time')
+    }
+    if (this.endDate < new Date()) {
+      return this.$Message.error('The end time cannot be less than the current time')
+    }
+    if (this.contestType === 'SECRET_WITH_PASSWORD' && this.password === '') {
+      return this.$Message.error('Please enter the password')
+    }
     const start = this.computeDate(this.startDate)
     const end = this.computeDate(this.endDate)
     const pwd =

@@ -14,12 +14,16 @@
       <template v-if="listVisible">
         <ul class="announcements-container" key="list">
           <li v-for="announcement in announcements" :key="announcement.title">
-            <div class="flex-container">
-              <div class="title"><a class="entry" @click="goAnnouncement(announcement)">
-                {{ announcement.title }}</a></div>
-              <div class="date">{{ announcement.createDate }}</div>
-              <div class="creator"> By {{ announcement.authorName }}</div>
-            </div>
+            <el-row>
+              <el-col :span="19">
+                <a class="entry" @click="goAnnouncement(announcement)">
+                  <el-icon class="el-icon-chat-round"></el-icon>
+                  <span style="padding: 0 10px">{{ announcement.title }}</span>
+                </a>
+              </el-col>
+              <el-col :span="3">{{ announcement.createDate }}</el-col>
+              <el-col :span="2"> By {{ announcement.authorName }}</el-col>
+            </el-row>
           </li>
         </ul>
         <Page v-if="!isContest"
@@ -119,35 +123,11 @@ export default class Announcement extends Vue {
     margin-left: 20px;
     font-size: 16px;
     border: 1px solid rgba(187, 187, 187, 0.5);
-    .flex-container {
-      .title {
-        flex: 1 1;
-        text-align: left;
-        padding-left: 10px;
+  }
 
-        a.entry {
-          color: #495060;
-
-          &:hover {
-            color: #2d8cf0;
-            border-bottom: 1px solid #2d8cf0;
-          }
-        }
-      }
-
-      .creator {
-        flex: none;
-        width: 200px;
-        text-align: center;
-
-      }
-
-      .date {
-        flex: none;
-        width: 200px;
-        text-align: center;
-      }
-    }
+  .entry {
+    float: left;
+    padding: 0 30px;
   }
 }
 
