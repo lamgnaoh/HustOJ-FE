@@ -128,6 +128,7 @@
                          @showSubComment="showMore(parentComment.id)"></comment>
                 <div v-show="parentComment.id == activeId" class="sub-comment">
                   <comment v-for="subComment in parentComment.listSubComment"
+                           :key="subComment.id"
                            :author="subComment.authorName"
                            :content="subComment.content"
                            :create-date="subComment.createDate"
