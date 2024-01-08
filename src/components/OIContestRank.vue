@@ -5,7 +5,7 @@
               <span style="font-weight: 500;margin: 0 10px 0 10px;"
               >Auto Refresh：</span
               >
-        <i-switch :disabled="refreshDisabled" @on-change="refreshAuto" />
+        <i-switch :disabled="refreshDisabled" v-model="autoRefresh" @on-change="refreshAuto" />
       </Col>
     </Row>
     <div class="echarts">
@@ -28,7 +28,7 @@ import api from "@/api/api";
 import {breakLongWords} from "@/util/util";
 @Component({})
 export default class OIContestRank extends Vue {
-
+  autoRefresh: boolean = false
   total: number = 0
   page: number = 1
   pageSize:number = 10
@@ -139,12 +139,11 @@ export default class OIContestRank extends Vue {
   }
   interval : any = null
   get refreshDisabled() {
-    console.log(this.contest.status)
     return this.contest.status === 'ENDED'
   }
 
-  refreshAuto(status: any) {
-    if (status === true) {
+  refreshAuto() {
+    if (this.autoRefresh) {
       ;(this as any).$Message.success('Auto refresh')
       this.interval = setInterval(() => {
         this.page = 1
@@ -186,8 +185,7 @@ export default class OIContestRank extends Vue {
   }
 
   getContestRankData(page: number, pageSize: number) {
-    const params = this.$route.params
-    const contestId: string = params.id
+    const contestId: string = this.$store.state.currentContest.id
     api
     .getRanking(contestId)
     .then((res:any) => {
@@ -281,6 +279,11 @@ export default class OIContestRank extends Vue {
       this.contestProblems = res.data.list
       this.addTableColumns(this.contestProblems)
     })
+  }
+
+  beforeDestroy() {
+    this.autoRefresh = false
+    clearInterval(this.interval)
   }
 
 

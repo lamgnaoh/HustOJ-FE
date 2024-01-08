@@ -5,7 +5,7 @@
               <span style="font-weight: 500;margin: 0 10px 0 10px;"
               >Auto Refresh：</span
               >
-        <i-switch v-model="autoRefresh" @on-change="refreshAuto" />
+        <i-switch :disabled="refreshDisabled" v-model="autoRefresh" @on-change="refreshAuto" />
       </Col>
     </Row>
     <div class="echarts">
@@ -153,6 +153,10 @@ export default class ACMContestRank extends Vue {
     series: []
   }
 
+  get refreshDisabled() {
+    return this.contest.status === 'ENDED'
+  }
+
   interval : any = null
   exportRank() {
     const params = this.$route.params
@@ -182,8 +186,8 @@ export default class ACMContestRank extends Vue {
     link.click()
     document.body.removeChild(link)
   }
-  refreshAuto(status: any) {
-    if (status === true) {
+  refreshAuto() {
+    if (this.autoRefresh) {
       ;(this as any).$Message.success('Auto refresh')
       this.interval = setInterval(() => {
         this.page = 1
@@ -203,8 +207,7 @@ export default class ACMContestRank extends Vue {
 
   getContestRankData(page: number, pageSize: number) {
     // @ts-ignore
-    const params = this.$route.params
-    const contestId: string = params.id
+    const contestId: string = this.$store.state.currentContest.id
     api
     .getRanking(contestId)
     .then((res: any) => {
@@ -351,6 +354,10 @@ export default class ACMContestRank extends Vue {
       this.addTableColumns(this.contestProblems)
       this.addChartCategory(this.contestProblems)
     })
+  }
+  beforeDestroy() {
+    this.autoRefresh = false
+    clearInterval(this.interval)
   }
 }
 
