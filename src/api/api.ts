@@ -196,4 +196,5 @@ export default {
   saveIssue: (data: {}) => axios.post('/api/v1/issue/save', data),
   pageIssue: (params: {}) => axios.get('/api/v1/issue/page', {params}),
   detailIssue: (data: { id: number }) => axios.get(`/api/v1/issue/detail/${data.id}`),
+  verifyToken : (data: { token: string }) => axios.get(`/api/v1/verify?token=${data.token}`)
 }

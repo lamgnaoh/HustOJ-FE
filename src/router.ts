@@ -23,6 +23,7 @@ import contestProblemDetail from '@/components/ContestProblemDetail.vue'
 import adminIndex from '@/admin/adminIndex.vue'
 import accountSetting from "@/views/AccountSetting.vue";
 import issuePage from '@/admin/issues/IssuePage.vue'
+import VerifyToken from "@/views/VerifyToken.vue";
 
 Vue.use(Router)
 const routerPush = Router.prototype.push
@@ -123,6 +124,11 @@ const router = new Router({
       path: '/setting/:id',
       name: 'setting',
       component: accountSetting,
+    },
+    {
+      path: '/verify/:token',
+      name: 'verify',
+      component: VerifyToken,
     },
     {
       path: '/admin',

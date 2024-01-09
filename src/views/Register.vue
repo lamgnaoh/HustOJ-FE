@@ -120,8 +120,9 @@ export default class About extends Vue {
           name: this.register.lastname + this.register.firstname,
         })
         .then((res: any) => {
-          ;(this as any).$Message.success('Registration success')
-          this.handleReset()
+          ;(this as any).$Message.success('Registration success. Please check email to complete registration')
+          this.$router.push('login')
+          // this.handleReset()
         })
         .catch((err: any) => {
           ;(this as any).$Message.error(err.data.message)
