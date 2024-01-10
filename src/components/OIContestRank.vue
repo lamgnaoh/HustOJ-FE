@@ -260,11 +260,12 @@ export default class OIContestRank extends Vue {
 
   mounted(){
     this.contestID = this.$route.params.id
-    api.getContestDetail({id: this.contestID}).then((res: any) => {
-      this.contest = res.data
-    }).catch((err: any) => {
-      this.$Message.error(err.data.message)
-    })
+    // api.getContestDetail({id: this.contestID}).then((res: any) => {
+    //   this.contest = res.data
+    // }).catch((err: any) => {
+    //   this.$Message.error(err.data.message)
+    // })
+    this.contest = this.$store.state.currentContest
     this.getContestRankData(this.page, this.pageSize)
     api
     .getAllProblemsFromASpecificContest({ id: this.contestID }).then((res:any) => {

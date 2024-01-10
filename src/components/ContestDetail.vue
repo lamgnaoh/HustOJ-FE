@@ -76,14 +76,15 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import api from '@/api/api'
-import { RankingQuery } from '../types/ranking'
 import { countInterval } from '@/util/util'
 import ACMContestRank from "@/components/ACMContestRank.vue";
 import OIContestRank from "@/components/OIContestRank.vue";
+import NullComponent from "@/components/NullComponent.vue";
 @Component({
   components: {
     ACMContestRank,
-    OIContestRank
+    OIContestRank,
+    NullComponent
   },
 })
 export default class ContestDetail extends Vue {
@@ -227,7 +228,7 @@ export default class ContestDetail extends Vue {
       },
     },
     {
-      title: 'Submisstion time',
+      title: 'Submission time',
       key: 'createDate',
     },
     {
@@ -347,20 +348,11 @@ export default class ContestDetail extends Vue {
   ]
   status: any = []
 
-  @Watch('name')
-  handleName(name: string) {
-    if (name === '' && this.author === '') {
-      this.getContestRanking()
-    }
-  }
-  @Watch('author')
-  handleAuthor(name: string) {
-    if (name === '' && this.name === '') {
-      this.getContestRanking()
-    }
-  }
 
   get currentView(){
+    if (this.$store.getters.getContestType === undefined) {
+      return 'NullComponent'
+    }
     return this.$store.getters.getContestType === 'ACM' ? 'ACMContestRank' : 'OIContestRank'
   }
   showContestSubmissionTab(){
@@ -572,26 +564,6 @@ export default class ContestDetail extends Vue {
   cancel() {
     this.$router.push({
       path: '/contests',
-    })
-  }
-
-
-  getContestRanking(query?: RankingQuery) {
-    const params = this.$route.params
-    const id: string = params.id
-    api
-    .getRanking(id, query)
-    .then((res: any) => {
-      if (res.data.rankingUserList.length > 0) {
-        this.problemKey = Object.keys(res.data.rankingUserList[0].timeList)
-        this.rankingUser = res.data.rankingUserList
-      } else {
-        this.problemKey = []
-        this.rankingUser = []
-      }
-    })
-    .catch((err: any) => {
-      ;(this as any).$Message.error(err.data.message)
     })
   }
 
