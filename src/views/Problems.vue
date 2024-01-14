@@ -42,7 +42,7 @@
             <li style="margin-right: 30px"></li>
             <li class="code">Problem Code</li>
             <li class="title">Problem</li>
-            <li class="diff" style="color: #2c3e50">Difficulty</li>
+            <li class="diff">Difficulty</li>
             <li>AC Rate</li>
           </ul>
           <ul
@@ -368,7 +368,6 @@ button {
   }
   .diff {
     width: 130px;
-    color: white;
     text-align: center;
   }
 }

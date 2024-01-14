@@ -31,23 +31,23 @@ Vue.use(ViewUI , {locale})
 Vue.use(VueHighlightJS)
 Vue.component('ECharts', Echarts)
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requireAuthAdmin)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    // true is Admin
-    const isAdmin =
-        (window.localStorage.getItem('role') as any).indexOf('USER') === -1
-    if (!isAdmin) {
-      next(false)
-    } else {
-      next()
-    }
-    next()
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requireAuthAdmin)) {
+//     // this route requires auth, check if logged in
+//     // if not, redirect to login page.
+//     // true is Admin
+//     const isAdmin =
+//         (window.localStorage.getItem('role') as any).indexOf('USER') === -1
+//     if (!isAdmin) {
+//       next(false)
+//     } else {
+//       next()
+//     }
+//     next()
+//   } else {
+//     next()
+//   }
+// })
 
 new Vue({
   router,

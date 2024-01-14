@@ -43,8 +43,6 @@ export default class App extends Vue {
         token: window.localStorage.getItem('token'),
         username: window.localStorage.getItem('username'),
       })
-    } else {
-      this.$router.push('login')
     }
   }
 }
