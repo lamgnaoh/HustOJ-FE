@@ -24,6 +24,7 @@ import adminIndex from '@/admin/adminIndex.vue'
 import accountSetting from "@/views/AccountSetting.vue";
 import issuePage from '@/admin/issues/IssuePage.vue'
 import VerifyToken from "@/views/VerifyToken.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 
 Vue.use(Router)
 const routerPush = Router.prototype.push
@@ -99,6 +100,11 @@ const router = new Router({
       path: '/forget',
       name: 'forget',
       component: forget,
+    },
+    {
+      path: '/reset-password/:token',
+      name: 'reset-password',
+      component: ResetPassword,
     },
     {
       path: '/rank',

@@ -141,8 +141,16 @@ export default {
         id: data.id,
         answer: data.answer,
       }),
-  forgetPassword: (data: { password: string }) =>
-      axios.post(`/api/v1/forgotPassword?password=${data.password}`),
+  forgetPassword: (data: { email: string }) =>
+      axios.post(`/api/v1/forgot-password`, data),
+  resetPassword: (data: {
+    newPassword: string,
+    confirmPassword: string,
+    token: string
+  }) => axios.post(`/api/v1/reset-password?token=${data.token}`, {
+    newPassword: data.newPassword,
+    confirmPassword: data.confirmPassword
+  }),
   // Group
   getGroups: (params: {}) => axios.get('/api/v1/groups', { params }),
   getGroup: (params: { id: string }) =>

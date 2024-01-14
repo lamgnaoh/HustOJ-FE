@@ -53,7 +53,7 @@ g++ -DONLINE_JUDGE -O2 -w -std=c++11 {src_path} -lm -o {exe_path}main</pre
             <ul>
               <li>If there are no special instructions, please use standard input and output.</li>
               <li>
-                Java code needs to be used Main as main class name。C/C++Code usage<code
+                Java code needs to be used Main as main class name.C/C++Code usage<code
               >int main()</code
               >，and need<code>return 0;</code>.
               </li>

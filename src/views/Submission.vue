@@ -6,7 +6,7 @@
         <Table :columns="title" :data="status"></Table>
       </Col>
     </Row>
-    <Row style="margin-top: 36px">
+    <Row justify="center" style="margin-top: 36px">
       <Page
           :total="total"
           show-sizer
