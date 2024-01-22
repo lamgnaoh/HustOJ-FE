@@ -207,7 +207,7 @@ const router = new Router({
                   ),
         },
         {
-          path: '/contest/:contestId/edit',
+          path: 'contest/:contestId/edit',
           name: 'edit-contest',
           component: () =>
               import(
@@ -252,22 +252,6 @@ const router = new Router({
           component: () =>
               import(
                   /* webpackChunkName: 'async-admin' */ '@/admin/contests/ContestMember.vue'
-                  ),
-        },
-        {
-          path: 'group-list',
-          name: 'group-list',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/groups/GroupList.vue'
-                  ),
-        },
-        {
-          path: 'create-group',
-          name: 'create-group',
-          component: () =>
-              import(
-                  /* webpackChunkName: 'async-admin' */ '@/admin/groups/CreateGroup.vue'
                   ),
         },
         {
