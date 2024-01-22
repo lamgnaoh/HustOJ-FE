@@ -29,14 +29,14 @@
             label="Rule Type"
             width="150">
           <template slot-scope="scope">
-            <el-tag type="gray">{{ scope.row.contestRuleType }}</el-tag>
+            <el-tag type="gray" effect="dark">{{ scope.row.contestRuleType }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
             label="Contest Type"
             width="200">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.contestType === 'PUBLIC' ? 'success' : 'primary'">
+            <el-tag :type="scope.row.contestType === 'PUBLIC' ? 'success' : 'primary'" effect="dark">
               {{ scope.row.contestType }}
             </el-tag>
           </template>
@@ -46,7 +46,8 @@
             width="130">
           <template slot-scope="scope">
             <el-tag
-                :type="scope.row.status === 'ENDED' ? 'danger' : scope.row.status === 'PROCESSING' ? 'success' : 'primary'">
+                :type="scope.row.status === 'ENDED' ? 'danger' : scope.row.status === 'PROCESSING' ? 'success' : 'primary' "
+                effect="dark">
               {{ scope.row.status }}
             </el-tag>
           </template>
