@@ -244,6 +244,7 @@ export default class Problems extends Vue {
               ' / ' +
               String(item.submitCount) +
               ')',
+          myStatus: item.myStatus
         })
       })
       that.problems = temp
