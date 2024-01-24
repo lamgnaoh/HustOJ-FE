@@ -222,7 +222,7 @@ export default class Problems extends Vue {
     api
     .getProblemsIdByTitle(
         {
-          title: keyword ,
+          keyword: keyword ,
           visible: true,
           difficulty: this.difficulty == '' ? null : this.difficulty.toUpperCase()
         }
