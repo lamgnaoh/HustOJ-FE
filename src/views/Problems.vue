@@ -85,7 +85,8 @@
               v-for="(tag, index) in tags"
               :key="index"
               shape="circle"
-              @click="addTag(tag.id)"
+              @click="addTag(tag.id,index)"
+              :style="{ backgroundColor: tagsBtn[index] ? '#29B6F6' : 'initial' }"
           >
             {{ tag.name }}
           </Button>
@@ -111,6 +112,7 @@ export default class Problems extends Vue {
   total: any = 0
   addTags: Array<number> = []
   difficulty: string= ''
+  tagsBtn: boolean[] = []
 
   level(level: string) {
     switch (level) {
@@ -162,6 +164,7 @@ export default class Problems extends Vue {
   onReset(){
     this.keyword=''
     this.difficulty=''
+    this.addTags = []
     this.getProblems(this.page,this.pageSize,this.addTags)
   }
 
@@ -271,7 +274,8 @@ export default class Problems extends Vue {
     })
   }
 
-  addTag(id: number) {
+  addTag(id: number, index: any) {
+    this.tagsBtn[index] = !this.tagsBtn[index];
     this.addTags = []
     this.addTags.push(id)
     this.getProblems(0, this.pageSize, this.addTags)
@@ -280,6 +284,7 @@ export default class Problems extends Vue {
   mounted() {
     this.getProblems()
     this.getAllTags()
+    this.tagsBtn = new Array(this.tags.length).fill(false)
   }
 }
 </script>
