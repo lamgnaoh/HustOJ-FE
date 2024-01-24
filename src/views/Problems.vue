@@ -165,6 +165,7 @@ export default class Problems extends Vue {
     this.keyword=''
     this.difficulty=''
     this.addTags = []
+    this.tagsBtn = new Array(this.tags.length).fill(false)
     this.getProblems(this.page,this.pageSize,this.addTags)
   }
 
