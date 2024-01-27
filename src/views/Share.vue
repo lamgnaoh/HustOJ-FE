@@ -1,10 +1,5 @@
 <template>
   <Row>
-    <Col span="10" offset="3">
-      <div v-if="$store.state.role !== 'ROLE_USER'" class="top">
-        <Button type="primary" @click="rejudge">Rejudge</Button>
-      </div>
-    </Col>
     <Col span="18" offset="3">
       <div class="container">
         <h2>
@@ -22,6 +17,28 @@
         <div v-if="errMsg.result === 'COMPILE_ERROR'">
           <h4>Run：</h4>
           <div class="error">{{ errMsg.message }}</div>
+        </div>
+        <div v-if="errMsg.result === 'WRONG_ANSWER' && commit.contestId == null">
+          <h4>Debug：</h4>
+          <div v-for="(el,index) in waDebugInfo"
+          :key="index"
+               class="error"
+          >
+            <Row :gutter="20">
+              <Col span="24">
+                <span>Input</span>
+                <pre>{{ el.input }}</pre>
+              </Col>
+              <Col span="12">
+                <span>Expected output</span>
+                <pre>{{ el.expectedOutput }}</pre>
+              </Col>
+              <Col span="12">
+                <span>Output</span>
+                <pre>{{ el.output }}</pre>
+              </Col>
+            </Row>
+          </div>
         </div>
         <div
             v-if="
@@ -81,6 +98,7 @@ export default class Share extends Vue {
   title: string = ''
   errMsg: any = {}
   select: string = 'ACCEPTED'
+  waDebugInfo: Array<any> = []
   submitList: Array<string> = [
     'ACCEPTED',
     'RUNTIME_ERROR',
@@ -131,6 +149,11 @@ export default class Share extends Vue {
       this.sourceCode = res.data.code.replace(/\\n/g, '\n')
       this.title = res.data.problemTitle
       this.errMsg = JSON.parse(res.data.resultDetail)
+      if(this.errMsg.result === "WRONG_ANSWER"){
+        Object.values(JSON.parse(this.commit.waDebugInfo)).forEach((el:any) => {
+          this.waDebugInfo.push(el);
+        })
+      }
     })
     .catch((err: any) => {
       ;(this as any).$Message.error(err.data.message)

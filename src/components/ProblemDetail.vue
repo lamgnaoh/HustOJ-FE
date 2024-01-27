@@ -226,6 +226,20 @@ export default class ProblemDetail extends Vue {
     {
       title: 'Result',
       key: 'result',
+      className: 'pointer-class',
+      render: (h: any, obj: any) => {
+        return h(
+            'span',
+            {
+              on: {
+                click: () => {
+                  this.toShare(obj.row.shareId)
+                },
+              },
+            },
+            obj.row.result
+        )
+      },
     },
   ]
   comment: any = {}

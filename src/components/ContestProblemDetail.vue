@@ -175,6 +175,20 @@ export default class ContestProblemDetail extends Vue {
     {
       title: 'Result',
       key: 'result',
+      className: 'pointer-class',
+      render: (h: any, obj: any) => {
+        return h(
+            'span',
+            {
+              on: {
+                click: () => {
+                  this.toShare(obj.row.id)
+                },
+              },
+            },
+            obj.row.result
+        )
+      },
     },
   ]
   submissionId: string = ''

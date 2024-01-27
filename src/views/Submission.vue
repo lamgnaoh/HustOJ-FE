@@ -36,7 +36,7 @@ export default class Submission extends Vue {
   title: any = [
     {
       title: '#',
-      key: 'id',
+      key: 'pid',
       width: 78,
     },
     {
@@ -172,6 +172,20 @@ export default class Submission extends Vue {
           return row.result === 'COMPILE_ERROR'
         }
       },
+      className: 'pointer-class',
+      render: (h: any, obj: any) => {
+        return h(
+            'span',
+            {
+              on: {
+                click: () => {
+                  this.toShare(obj.row.id)
+                },
+              },
+            },
+            obj.row.result
+        )
+      },
     },
   ]
   status: any = []
@@ -182,6 +196,14 @@ export default class Submission extends Vue {
       params: { id: id },
     })
   }
+  toShare(id: string) {
+    const routeData = this.$router.resolve({
+      name: 'share',
+      params: {id: id},
+    })
+    window.open(routeData.href, '_blank')
+  }
+
 
   pageChange(pages: number) {
     this.page = pages - 1
@@ -205,7 +227,7 @@ export default class Submission extends Vue {
       let id = 0
       this.status = res.data.list.map((item: any) => {
         id += 1
-        item.id = id
+        item.pid = id
         if (item.result === 'ACCEPTED') {
           return {
             ...item,
